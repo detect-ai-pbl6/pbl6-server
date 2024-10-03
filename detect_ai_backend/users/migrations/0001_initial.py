@@ -2,11 +2,10 @@
 
 from django.db import migrations, models
 import django.utils.timezone
-import project_name.users.models
+import detect_ai_backend.users.models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -110,7 +109,7 @@ class Migration(migrations.Migration):
                 "abstract": False,
             },
             managers=[
-                ("objects", project_name.users.models.UserManager()),
+                ("objects", detect_ai_backend.users.models.UserManager()),
             ],
         ),
     ]
