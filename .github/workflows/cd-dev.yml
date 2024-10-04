@@ -10,13 +10,14 @@ jobs:
       IMAGE_NAME: ${{ vars.IMAGE_NAME }}
       IMAGE_TAG: ${{ github.sha }}
       PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+      ARTIFACT_REPOSITORY: ${{ secret.GCP_ARTIFACT_REPOSITORY }}
 
     steps:
 
     - name: code checkout
       uses: actions/checkout@v2
 
-    - id: 'auth'
+    - name: gcp authentication
       uses: 'google-github-actions/auth@v2'
       with:
         credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
@@ -36,6 +37,6 @@ jobs:
       uses: docker/build-push-action@v6
       with:
           push: true
-          tags: asia-southeast1-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.IMAGE_REPOSITORY }}/${{ env.IMAGE_NAME }}
+          tags: asia-southeast1-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.ARTIFACT_REPOSITORY }}/${{ env.IMAGE_NAME }}
           build-args: |
             ENV=dev
