@@ -1,0 +1,9 @@
+-r requirements.txt
+# Code quality
+# ------------------------------------------------------------------------------
+flake8==7.0.0
+flake8-isort==6.1.1
+coverage==7.4.0
+black==24.1.1
+pylint-django==2.5.5
+pre-commit==3.6.0

@@ -1,12 +1,14 @@
 from django.utils.translation import gettext_lazy as _
+from rest_framework import serializers
 from rest_framework_simplejwt.exceptions import TokenError
 from rest_framework_simplejwt.serializers import (
+    PasswordField,
     TokenObtainPairSerializer,
     TokenRefreshSerializer,
 )
 from rest_framework_simplejwt.settings import api_settings
 
-from detect_ai_backend.refresh_tokens.models import (
+from detect_ai_backend.authentication.models import (
     RefreshToken,
     RefreshTokenFamily,
     RefreshTokenFamilyStatus,
@@ -15,6 +17,12 @@ from detect_ai_backend.refresh_tokens.models import (
 
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    def __init__(self, *args, **kwargs) -> None:
+        super().__init__(*args, **kwargs)
+
+        self.fields[self.username_field] = serializers.EmailField(write_only=True)
+        self.fields["password"] = PasswordField()
+
     def validate(self, attrs):
         data = super().validate(attrs)
 
@@ -71,3 +79,8 @@ class CustomTokenRefreshSerializer(TokenRefreshSerializer):
         data["refresh"] = str(refresh)
 
         return data
+
+
+class CustomTokenObtainPairResponseSerializer(serializers.Serializer):
+    access = serializers.CharField()
+    refresh = serializers.CharField()
