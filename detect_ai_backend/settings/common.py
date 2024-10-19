@@ -30,7 +30,8 @@ INSTALLED_APPS = [
     "corsheaders",
     "drf_yasg",
     "detect_ai_backend.users",
-    "detect_ai_backend.refresh_tokens",
+    "detect_ai_backend.authentication",
+    "detect_ai_backend.files",
 ]
 
 MIDDLEWARE = [
@@ -149,8 +150,8 @@ SIMPLE_JWT = {
     "SLIDING_TOKEN_REFRESH_EXP_CLAIM": "refresh_exp",
     "SLIDING_TOKEN_LIFETIME": timedelta(hours=1),
     "SLIDING_TOKEN_REFRESH_LIFETIME": timedelta(days=7),
-    "TOKEN_REFRESH_SERIALIZER": "detect_ai_backend.refresh_tokens.serializers.CustomTokenRefreshSerializer",
-    "TOKEN_OBTAIN_SERIALIZER": "detect_ai_backend.refresh_tokens.serializers.CustomTokenObtainPairSerializer",
+    "TOKEN_REFRESH_SERIALIZER": "detect_ai_backend.authentication.serializers.CustomTokenRefreshSerializer",
+    "TOKEN_OBTAIN_SERIALIZER": "detect_ai_backend.authentication.serializers.CustomTokenObtainPairSerializer",
 }
 
 # Docs
