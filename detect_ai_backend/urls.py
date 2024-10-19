@@ -23,6 +23,7 @@ from rest_framework import permissions
 from rest_framework_simplejwt.views import TokenRefreshView
 
 from detect_ai_backend.authentication.views import CustomTokenObtainPairView
+from detect_ai_backend.files.views import SignedGCPStorageURLView
 from detect_ai_backend.users.views import RegistrationAPIView
 
 schema_view = get_schema_view(
@@ -52,5 +53,9 @@ urlpatterns = [
     path("api/auth/register", RegistrationAPIView.as_view(), name="register"),
     path("api/auth/login", CustomTokenObtainPairView.as_view(), name="login"),
     path("api/auth/refresh-token", TokenRefreshView.as_view(), name="refresh_token"),
-    path("api/files/signed-url", TokenRefreshView.as_view(), name="files_signed_url"),
+    path(
+        "api/files/signed-url",
+        SignedGCPStorageURLView.as_view(),
+        name="files_signed_url",
+    ),
 ]
