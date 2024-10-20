@@ -45,3 +45,5 @@ CORS_ALLOWED_ORIGINS = [
 
 GCP_BUCKET_NAME = os.getenv("GCP_BUCKET_NAME", "")  # noqa
 GCP_STORAGE_CLIENT = storage.Client()
+GCP_FILES_BUCKET = GCP_STORAGE_CLIENT.get_bucket(GCP_BUCKET_NAME)
+GCP_STORAGE_URL = f"https://storage.googleapis.com/{GCP_BUCKET_NAME}"  # noqa
