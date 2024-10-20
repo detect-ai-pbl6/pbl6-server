@@ -18,7 +18,7 @@ class SignedGCPStorageURLView(generics.CreateAPIView):
         responses={status.HTTP_201_CREATED: SignedGCPStorageURLResponseSerializer}
     )
     def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer()
+        serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         validated_data = serializer.validated_data
         url, file_name = generate_upload_signed_url_v4(validated_data["mime_type"])
