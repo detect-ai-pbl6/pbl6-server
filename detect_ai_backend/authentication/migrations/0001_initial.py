@@ -76,7 +76,7 @@ class Migration(migrations.Migration):
                     "family",
                     models.ForeignKey(
                         on_delete=django.db.models.deletion.CASCADE,
-                        to="refresh_tokens.refreshtokenfamily",
+                        to="authentication.refreshtokenfamily",
                     ),
                 ),
                 (
@@ -85,7 +85,7 @@ class Migration(migrations.Migration):
                         default=None,
                         null=True,
                         on_delete=django.db.models.deletion.CASCADE,
-                        to="refresh_tokens.refreshtoken",
+                        to="authentication.refreshtoken",
                     ),
                 ),
             ],
