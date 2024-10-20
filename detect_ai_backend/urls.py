@@ -58,4 +58,9 @@ urlpatterns = [
         SignedGCPStorageURLView.as_view(),
         name="files_signed_url",
     ),
+    path(
+        "api/files/signed-urls",
+        SignedGCPStorageURLView.as_view(),
+        name="files_signed_url",
+    ),
 ]

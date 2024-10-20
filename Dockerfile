@@ -13,7 +13,7 @@ WORKDIR /code
 
 COPY . .
 # RUN apk add build-base libffi-dev libstdc++ postgresql-dev libpq
-RUN apt-get update -y\
+RUN apt-get update -y \
     && apt-get -y install libpq-dev gcc \
     && pip install -r requirements.txt
 
