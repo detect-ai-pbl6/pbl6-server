@@ -1,7 +1,7 @@
 # Create your views here.
 from django.conf import settings
 from drf_yasg.utils import swagger_auto_schema
-from rest_framework import generics, response, status
+from rest_framework import generics, permissions, response, status
 
 from detect_ai_backend.files.serializers import (
     SignedGCPStorageURLRequestSerializer,
@@ -12,6 +12,7 @@ from detect_ai_backend.utils.gcp_storage import generate_upload_signed_url_v4
 
 class SignedGCPStorageURLView(generics.CreateAPIView):
     serializer_class = SignedGCPStorageURLRequestSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
     @swagger_auto_schema(
         responses={status.HTTP_201_CREATED: SignedGCPStorageURLResponseSerializer}
