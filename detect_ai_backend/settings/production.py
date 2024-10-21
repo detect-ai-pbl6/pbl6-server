@@ -2,6 +2,8 @@
 Production settings
 """
 
+from google.auth import default
+from google.auth.transport import requests
 from google.cloud import storage
 
 from .common import *  # noqa
@@ -43,7 +45,9 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:7000",
 ]
 
+GCP_CREDENTIALS, _ = default()
+GCP_CREDENTIALS.refresh(requests.Request())
 GCP_BUCKET_NAME = os.getenv("GCP_BUCKET_NAME", "")  # noqa
-GCP_STORAGE_CLIENT = storage.Client()
+GCP_STORAGE_CLIENT = storage.Client(credentials=GCP_CREDENTIALS)
 GCP_FILES_BUCKET = GCP_STORAGE_CLIENT.get_bucket(GCP_BUCKET_NAME)
 GCP_STORAGE_URL = f"https://storage.googleapis.com/{GCP_BUCKET_NAME}"  # noqa

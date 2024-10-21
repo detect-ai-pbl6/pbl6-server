@@ -13,13 +13,21 @@ def generate_upload_signed_url_v4(mime_type: str):
     """
     file_name = str(uuid.uuid4())
     blob = settings.GCP_FILES_BUCKET.blob(file_name)
+    # signing_credentials = compute_engine.IDTokenCredentials(
+    #     settings.AUTH_REQUEST,
+    #     "",
+    #     service_account_email=settings.GCP_CREDENTIALS.service_account_email
+    # )
     url = blob.generate_signed_url(
         version="v4",
         # This URL is valid for 15 minutes
         expiration=datetime.timedelta(minutes=15),
         # Allow PUT requests using this URL.
+        #  credentials=signing_credentials,
         method="PUT",
         content_type=mime_type,
+        service_account_email=settings.GCP_CREDENTIALS.service_account_email,
+        access_token=settings.GCP_CREDENTIALS.token,
     )
 
     return url, file_name
