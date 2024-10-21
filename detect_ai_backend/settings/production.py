@@ -16,7 +16,7 @@ DEBUG = True
 # SECRET_KEY = os.getenv(  # noqa
 #     "SECRET_KEY", "django-insecure-*$0b8ibx7uzk45cm+fxw7*jj(yzi2ye!l4+!dnyxa-u-nbuz=q"
 # )
-SECRET_KEY = "U.gM-V)D5Z{CA303?eJ%Kr-}48CfM#p}0GzcE[BD*pa;;PPwrq/U7J!n{e9H"
+SECRET_KEY = os.getenv("SECRET_KEY", "")  # noqa  # nosec
 ALLOWED_HOSTS = [os.getenv("ALLOWED_HOSTS", "*")]  # noqa
 
 HOST = os.getenv("HOST", "http://localhost:8000/")  # noqa
@@ -39,11 +39,7 @@ DATABASES = {
 # CORS_ALLOWED_ORIGINS = os.getenv(  # noqa
 #     "CORS_ALLOWED_ORIGINS", "http://localhost:3000, http://localhost:8000, http://localhost:7000"
 # ).split(",")
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://localhost:8000",
-    "http://localhost:7000",
-]
+CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "").split(",")  # noqa
 
 GCP_CREDENTIALS, _ = default()
 GCP_CREDENTIALS.refresh(requests.Request())

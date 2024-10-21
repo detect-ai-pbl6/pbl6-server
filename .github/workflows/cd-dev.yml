@@ -2,7 +2,7 @@ name: CD-dev
 
 on:
   push:
-    branches: [ "fix/missing-args" ]
+    branches: [ "dev" ]
 jobs:
   deploy:
     runs-on: ubuntu-latest
