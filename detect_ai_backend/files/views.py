@@ -12,7 +12,7 @@ from detect_ai_backend.utils.gcp_storage import generate_upload_signed_url_v4
 
 class SignedGCPStorageURLView(generics.CreateAPIView):
     serializer_class = SignedGCPStorageURLRequestSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.IsAuthenticated]
 
     @swagger_auto_schema(
         responses={status.HTTP_201_CREATED: SignedGCPStorageURLResponseSerializer}

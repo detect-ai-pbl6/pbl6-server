@@ -13,6 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.conf import settings
 from django.contrib import admin
 from django.http import HttpResponse
@@ -24,7 +25,10 @@ from rest_framework_simplejwt.views import TokenRefreshView
 
 from detect_ai_backend.authentication.views import CustomTokenObtainPairView
 from detect_ai_backend.files.views import SignedGCPStorageURLView
-from detect_ai_backend.users.views import RegistrationAPIView
+from detect_ai_backend.users.views import (
+    RegistrationAPIView,
+    RetrieveUpdateUserProfileView,
+)
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -59,8 +63,8 @@ urlpatterns = [
         name="files_signed_url",
     ),
     path(
-        "api/files/signed-urls",
-        SignedGCPStorageURLView.as_view(),
-        name="files_signed_url",
+        "api/users/me",
+        RetrieveUpdateUserProfileView.as_view(),
+        name="retrieve_update_profile",
     ),
 ]
