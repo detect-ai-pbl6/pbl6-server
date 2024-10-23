@@ -22,8 +22,6 @@ EXPOSE 80
 ENV DJANGO_SETTINGS_MODULE="detect_ai_backend.settings.production" \
     ENV=${ENV} \
     SECRET_KEY=${SECRET_KEY}
-# CORS_ALLOWED_ORIGINS=${CORS_ALLOWED_ORIGINS} \
-# HOST=${HOST}
 
 RUN chmod +x ./docker-entrypoint.sh
 ENTRYPOINT ["./docker-entrypoint.sh"]

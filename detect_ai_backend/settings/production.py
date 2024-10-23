@@ -11,8 +11,7 @@ from .common import *  # noqa
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
-DEBUG = os.getenv("ENV", default="dev") == "dev"  # noqa
-DEBUG = True
+DEBUG = False
 # SECRET_KEY = os.getenv(  # noqa
 #     "SECRET_KEY", "django-insecure-*$0b8ibx7uzk45cm+fxw7*jj(yzi2ye!l4+!dnyxa-u-nbuz=q"
 # )
