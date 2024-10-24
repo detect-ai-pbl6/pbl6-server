@@ -23,7 +23,7 @@ from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 from rest_framework_simplejwt.views import TokenRefreshView
 
-from detect_ai_backend.authentication.views import CustomTokenObtainPairView
+from detect_ai_backend.authentication.views import CustomTokenObtainPairView, JWKView
 from detect_ai_backend.files.views import SignedGCPStorageURLView
 from detect_ai_backend.users.views import (
     RegistrationAPIView,
@@ -52,6 +52,7 @@ urlpatterns = [
     ),
     # health
     path("api/health", lambda _: HttpResponse("OK")),
+    path(".well-known/jwks.json", JWKView.as_view()),
     # auth
     path("admin/", admin.site.urls),
     path("api/auth/register", RegistrationAPIView.as_view(), name="register"),

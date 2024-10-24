@@ -33,6 +33,9 @@ INSTALLED_APPS = [
     "detect_ai_backend.users",
     "detect_ai_backend.authentication",
     "detect_ai_backend.files",
+    # "allauth",
+    # "allauth.account",
+    # "allauth.headless",
 ]
 
 MIDDLEWARE = [
@@ -45,6 +48,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    # "allauth.account.middleware.AccountMiddleware",
 ]
 
 ROOT_URLCONF = "detect_ai_backend.urls"
@@ -120,7 +124,17 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
+    "DEFAULT_RENDERER_CLASSES": [
+        "rest_framework.renderers.JSONRenderer",
+    ],
 }
+
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
+    "django.contrib.auth.backends.ModelBackend",
+    # `allauth` specific authentication methods, such as login by email
+    # "allauth.account.auth_backends.AuthenticationBackend",
+]
 
 # auth config
 AUTH_USER_MODEL = "users.User"
@@ -130,15 +144,20 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = "email"
 
-# JWT config
+
+# Docs
+SWAGGER_SETTINGS = {
+    "SECURITY_DEFINITIONS": {
+        "Bearer": {"type": "apiKey", "name": "Authorization", "in": "header"}
+    }
+}
+
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(hours=1),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
     "ROTATE_REFRESH_TOKENS": False,
     "BLACKLIST_AFTER_ROTATION": True,
-    "ALGORITHM": "HS256",
-    "SIGNING_KEY": "t3llqPQAgIfXbfFwlChpujYOFsjXz2sI",
-    "VERIFYING_KEY": None,
+    "ALGORITHM": "RS256",
     "AUTH_HEADER_TYPES": ("Bearer",),
     "USER_ID_FIELD": "id",
     "USER_ID_CLAIM": "user_id",
@@ -152,9 +171,4 @@ SIMPLE_JWT = {
     "TOKEN_OBTAIN_SERIALIZER": "detect_ai_backend.authentication.serializers.CustomTokenObtainPairSerializer",
 }
 
-# Docs
-SWAGGER_SETTINGS = {
-    "SECURITY_DEFINITIONS": {
-        "Bearer": {"type": "apiKey", "name": "Authorization", "in": "header"}
-    }
-}
+HEADLESS_ONLY = True
