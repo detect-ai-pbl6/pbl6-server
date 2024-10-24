@@ -34,10 +34,16 @@ DATABASES = {
     }
 }
 
+PRIVATE_KEY = os.getenv("PRIVATE_KEY")  # noqa
+PUBLIC_KEY = os.getenv("PUBLIC_KEY")  # noqa
+
+SIMPLE_JWT.update(  # noqa
+    {
+        "SIGNING_KEY": PRIVATE_KEY,
+        "VERIFYING_KEY": PUBLIC_KEY,
+    }
+)
 # CORS config
-# CORS_ALLOWED_ORIGINS = os.getenv(  # noqa
-#     "CORS_ALLOWED_ORIGINS", "http://localhost:3000, http://localhost:8000, http://localhost:7000"
-# ).split(",")
 CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "").split(",")  # noqa
 
 GCP_CREDENTIALS, _ = default()
