@@ -15,7 +15,7 @@
    ```
    pip install -r requirements.txt
    ```
-2. Update database information in `project_name/settings/local.py`
+2. Update database information in `detect_ai_backend/settings/local.py`
 3. Migrate database
    ```
    python manage.py migrate
