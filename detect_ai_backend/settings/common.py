@@ -33,9 +33,11 @@ INSTALLED_APPS = [
     "detect_ai_backend.users",
     "detect_ai_backend.authentication",
     "detect_ai_backend.files",
-    # "allauth",
-    # "allauth.account",
-    # "allauth.headless",
+    "allauth",
+    "allauth.account",
+    "allauth.headless",
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.google",
 ]
 
 MIDDLEWARE = [
@@ -48,7 +50,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    # "allauth.account.middleware.AccountMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
 ]
 
 ROOT_URLCONF = "detect_ai_backend.urls"
@@ -133,7 +135,7 @@ AUTHENTICATION_BACKENDS = [
     # Needed to login by username in Django admin, regardless of `allauth`
     "django.contrib.auth.backends.ModelBackend",
     # `allauth` specific authentication methods, such as login by email
-    # "allauth.account.auth_backends.AuthenticationBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
 ]
 
 # auth config
@@ -149,7 +151,8 @@ ACCOUNT_AUTHENTICATION_METHOD = "email"
 SWAGGER_SETTINGS = {
     "SECURITY_DEFINITIONS": {
         "Bearer": {"type": "apiKey", "name": "Authorization", "in": "header"}
-    }
+    },
+    "USE_SESSION_AUTH": True,
 }
 
 SIMPLE_JWT = {
