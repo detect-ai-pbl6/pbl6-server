@@ -26,6 +26,7 @@ from rest_framework_simplejwt.views import TokenRefreshView
 from detect_ai_backend.authentication.views import (
     CustomTokenObtainPairView,
     JWKView,
+    SocialsLoginView,
     TokenView,
 )
 from detect_ai_backend.files.views import SignedGCPStorageURLView
@@ -63,6 +64,11 @@ urlpatterns = [
     path("api/auth/login", CustomTokenObtainPairView.as_view(), name="login"),
     path("api/auth/refresh-token", TokenRefreshView.as_view(), name="refresh_token"),
     path("api/auth/tokens", TokenView.as_view()),
+    path(
+        "api/auth/login/socials",
+        SocialsLoginView.as_view(),
+        name="social_auth",
+    ),
     path("accounts/", include("allauth.urls")),
     # Include the API endpoints:
     path("_allauth/", include("allauth.headless.urls")),
