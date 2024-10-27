@@ -45,6 +45,11 @@ SIMPLE_JWT.update(  # noqa
 )
 # CORS config
 CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "").split(",")  # noqa
+CORS_ALLOW_CREDENTIALS = True
+
+# CSRF
+CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS", "").split(",")  # noqa
+
 
 GCP_CREDENTIALS, _ = default()
 GCP_CREDENTIALS.refresh(requests.Request())
@@ -52,3 +57,22 @@ GCP_BUCKET_NAME = os.getenv("GCP_BUCKET_NAME", "")  # noqa
 GCP_STORAGE_CLIENT = storage.Client(credentials=GCP_CREDENTIALS)
 GCP_FILES_BUCKET = GCP_STORAGE_CLIENT.get_bucket(GCP_BUCKET_NAME)
 GCP_STORAGE_URL = f"https://storage.googleapis.com/{GCP_BUCKET_NAME}"  # noqa
+
+
+SOCIALACCOUNT_PROVIDERS = {
+    "google": {
+        "SCOPE": [
+            "profile",
+            "email",
+        ],
+        "AUTH_PARAMS": {
+            "access_type": "online",
+        },
+        "OAUTH_PKCE_ENABLED": True,
+        "APP": {
+            "client_id": os.getenv("GOOGLE_CLIENT_ID", ""),  # noqa
+            "secret": os.getenv("GOOGLE_SECRET", ""),  # noqa
+            "key": "",
+        },
+    }
+}

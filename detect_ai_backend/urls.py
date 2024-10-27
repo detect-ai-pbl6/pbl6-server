@@ -17,13 +17,17 @@ Including another URLconf
 from django.conf import settings
 from django.contrib import admin
 from django.http import HttpResponse
-from django.urls import path, re_path
+from django.urls import include, path, re_path
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 from rest_framework_simplejwt.views import TokenRefreshView
 
-from detect_ai_backend.authentication.views import CustomTokenObtainPairView, JWKView
+from detect_ai_backend.authentication.views import (
+    CustomTokenObtainPairView,
+    JWKView,
+    TokenView,
+)
 from detect_ai_backend.files.views import SignedGCPStorageURLView
 from detect_ai_backend.users.views import (
     RegistrationAPIView,
@@ -58,6 +62,10 @@ urlpatterns = [
     path("api/auth/register", RegistrationAPIView.as_view(), name="register"),
     path("api/auth/login", CustomTokenObtainPairView.as_view(), name="login"),
     path("api/auth/refresh-token", TokenRefreshView.as_view(), name="refresh_token"),
+    path("api/auth/tokens", TokenView.as_view()),
+    path("accounts/", include("allauth.urls")),
+    # Include the API endpoints:
+    path("_allauth/", include("allauth.headless.urls")),
     path(
         "api/files/signed-url",
         SignedGCPStorageURLView.as_view(),
