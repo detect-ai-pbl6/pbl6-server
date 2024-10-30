@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 from rest_framework_simplejwt.exceptions import TokenError
@@ -79,6 +80,17 @@ class CustomTokenRefreshSerializer(TokenRefreshSerializer):
         data["refresh"] = str(refresh)
 
         return data
+
+
+class SocialProviders:
+    PROVIDERS = []
+    for key in settings.SOCIALACCOUNT_PROVIDERS.keys():
+        PROVIDERS.append(key)
+
+
+class SocialLoginSerializer(serializers.Serializer):
+    provider = serializers.ChoiceField(choices=SocialProviders.PROVIDERS)
+    callback_url = serializers.URLField()
 
 
 class CustomTokenObtainPairResponseSerializer(serializers.Serializer):
