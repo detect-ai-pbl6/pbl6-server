@@ -82,4 +82,5 @@ urlpatterns = [
         RetrieveUpdateUserProfileView.as_view(),
         name="retrieve_update_profile",
     ),
+    path("silk/", include("silk.urls", namespace="silk")),
 ]

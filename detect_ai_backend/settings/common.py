@@ -33,11 +33,14 @@ INSTALLED_APPS = [
     "detect_ai_backend.users",
     "detect_ai_backend.authentication",
     "detect_ai_backend.files",
+    "detect_ai_backend.history",
     "allauth",
     "allauth.account",
     "allauth.headless",
     "allauth.socialaccount",
     "allauth.socialaccount.providers.google",
+    "allauth.socialaccount.providers.github",
+    "silk",
 ]
 
 MIDDLEWARE = [
@@ -51,6 +54,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "allauth.account.middleware.AccountMiddleware",
+    "silk.middleware.SilkyMiddleware",
 ]
 
 ROOT_URLCONF = "detect_ai_backend.urls"
