@@ -25,7 +25,6 @@ class AuthMiddleware(BaseMiddleware):
         self.app = app
 
     async def __call__(self, scope, receive, send):
-        print(True)
         # Parse headers
         headers = dict(scope.get("headers", []))
 

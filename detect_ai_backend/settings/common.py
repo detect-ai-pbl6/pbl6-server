@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     "detect_ai_backend.files",
     "detect_ai_backend.history",
     "detect_ai_backend.websocket",
+    "detect_ai_backend.api_keys",
     "allauth",
     "allauth.account",
     "allauth.headless",
@@ -43,6 +44,7 @@ INSTALLED_APPS = [
     "allauth.socialaccount.providers.google",
     "allauth.socialaccount.providers.github",
     # "silk",
+    "django_filters",
 ]
 
 MIDDLEWARE = [
@@ -136,6 +138,9 @@ REST_FRAMEWORK = {
     "DEFAULT_RENDERER_CLASSES": [
         "rest_framework.renderers.JSONRenderer",
     ],
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
+    "PAGE_SIZE": 20,
+    "DEFAULT_FILTER_BACKENDS": ("django_filters.rest_framework.DjangoFilterBackend",),
 }
 
 AUTHENTICATION_BACKENDS = [
