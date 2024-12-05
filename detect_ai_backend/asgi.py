@@ -12,10 +12,13 @@ import os
 from channels.routing import ProtocolTypeRouter, URLRouter
 from channels.security.websocket import AllowedHostsOriginValidator
 from django.core.asgi import get_asgi_application
-from django.urls import re_path
 
-from detect_ai_backend.utils.authentication import AuthMiddlewareStack
-from detect_ai_backend.websocket import consumers
+asgi_application = get_asgi_application()  # noqa
+
+from django.urls import re_path  # noqa
+
+from detect_ai_backend.utils.authentication import AuthMiddlewareStack  # noqa
+from detect_ai_backend.websocket import consumers  # noqa
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "detect_ai_backend.settings.production")
 
@@ -25,7 +28,7 @@ websocket_urlpatterns = [
 
 application = ProtocolTypeRouter(
     {
-        "http": get_asgi_application(),
+        "http": asgi_application,
         # Just HTTP for now. (We can add other protocols later.)
         "websocket": AllowedHostsOriginValidator(
             AuthMiddlewareStack(URLRouter(websocket_urlpatterns))
