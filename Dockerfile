@@ -1,27 +1,38 @@
 # Runtime stage
 FROM python:3.10-slim-buster
 
+# Set environment variables
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    DEBIAN_FRONTEND=noninteractive
+
+# Set build arguments
 ARG ENV
-ARG SECRET_KEY
-ARG CORS_ALLOWED_ORIGINS
-ARG HOST
-
-ENV PYTHONUNBUFFERED 1
-
 
 WORKDIR /code
 
-COPY . .
-# RUN apk add build-base libffi-dev libstdc++ postgresql-dev libpq
+# Copy only requirements first to leverage Docker cache
+COPY requirements.txt .
+
+# Install dependencies in a single layer
 RUN apt-get update -y \
-    && apt-get -y install libpq-dev gcc \
-    && pip install -r requirements.txt
+    && apt-get install -y \
+    libpq-dev \
+    gcc \
+    && pip install --no-cache-dir -r requirements.txt \
+    && apt-get autoremove -y \
+    && apt-get clean
+
+# Copy application code
+COPY . .
+
+# Set runtime environment variables
+ENV DJANGO_SETTINGS_MODULE="detect_ai_backend.settings.production" \
+    ENV=${ENV}
+
+# Set permissions for entrypoint script
+RUN chmod +x ./docker-entrypoint.sh
 
 EXPOSE 80
 
-ENV DJANGO_SETTINGS_MODULE="detect_ai_backend.settings.production" \
-    ENV=${ENV} \
-    SECRET_KEY=${SECRET_KEY}
-
-RUN chmod +x ./docker-entrypoint.sh
 ENTRYPOINT ["./docker-entrypoint.sh"]
