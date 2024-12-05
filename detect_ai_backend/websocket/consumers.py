@@ -11,6 +11,7 @@ from detect_ai_backend.websocket.models import Websocket
 
 User = get_user_model()
 
+
 class WsConsumer(WebsocketConsumer):
     def connect(self):
 
@@ -54,3 +55,8 @@ class WsConsumer(WebsocketConsumer):
 
         except (InvalidToken, TokenError, User.DoesNotExist):
             return None
+
+
+class Handle404Consumer(WebsocketConsumer):
+    def connect(self):
+        self.close(code=404)

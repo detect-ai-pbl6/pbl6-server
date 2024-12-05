@@ -23,7 +23,8 @@ from detect_ai_backend.websocket import consumers  # noqa
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "detect_ai_backend.settings.production")
 
 websocket_urlpatterns = [
-    re_path(r"ws/test", consumers.WsConsumer.as_asgi()),
+    re_path(r"ws", consumers.WsConsumer.as_asgi()),
+    re_path(r"", consumers.Handle404Consumer.as_asgi()),
 ]
 
 application = ProtocolTypeRouter(

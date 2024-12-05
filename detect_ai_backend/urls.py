@@ -23,14 +23,16 @@ from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 from rest_framework_simplejwt.views import TokenRefreshView
 
+from detect_ai_backend.api_keys.views import APIKeyListCreateView
 from detect_ai_backend.authentication.views import (
     CustomTokenObtainPairView,
     JWKView,
     SocialsLoginView,
     TokenView,
 )
-from detect_ai_backend.files.views import SignedGCPStorageURLView, TestAPIView
+from detect_ai_backend.files.views import SignedGCPStorageURLView
 from detect_ai_backend.users.views import (
+    ListUserView,
     RegistrationAPIView,
     RetrieveUpdateUserProfileView,
 )
@@ -81,6 +83,16 @@ urlpatterns = [
         "api/users/me",
         RetrieveUpdateUserProfileView.as_view(),
         name="retrieve_update_profile",
+    ),
+    path(
+        "api/users",
+        ListUserView.as_view(),
+        name="list_users",
+    ),
+    path(
+        "api/api-keys",
+        APIKeyListCreateView.as_view(),
+        name="list_create_api_key",
     ),
     # path(
     #     "api/test",
