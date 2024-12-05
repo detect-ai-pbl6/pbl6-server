@@ -20,6 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Application definition
 
 INSTALLED_APPS = [
+    "daphne",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -34,13 +35,14 @@ INSTALLED_APPS = [
     "detect_ai_backend.authentication",
     "detect_ai_backend.files",
     "detect_ai_backend.history",
+    "detect_ai_backend.websocket",
     "allauth",
     "allauth.account",
     "allauth.headless",
     "allauth.socialaccount",
     "allauth.socialaccount.providers.google",
     "allauth.socialaccount.providers.github",
-    "silk",
+    # "silk",
 ]
 
 MIDDLEWARE = [
@@ -54,7 +56,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "allauth.account.middleware.AccountMiddleware",
-    "silk.middleware.SilkyMiddleware",
+    # "silk.middleware.SilkyMiddleware",
 ]
 
 ROOT_URLCONF = "detect_ai_backend.urls"
@@ -76,6 +78,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "detect_ai_backend.wsgi.application"
+ASGI_APPLICATION = "detect_ai_backend.asgi.application"
 
 
 # Password validation

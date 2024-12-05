@@ -29,7 +29,7 @@ from detect_ai_backend.authentication.views import (
     SocialsLoginView,
     TokenView,
 )
-from detect_ai_backend.files.views import SignedGCPStorageURLView
+from detect_ai_backend.files.views import SignedGCPStorageURLView, TestAPIView
 from detect_ai_backend.users.views import (
     RegistrationAPIView,
     RetrieveUpdateUserProfileView,
@@ -82,5 +82,8 @@ urlpatterns = [
         RetrieveUpdateUserProfileView.as_view(),
         name="retrieve_update_profile",
     ),
-    path("silk/", include("silk.urls", namespace="silk")),
+    # path(
+    #     "api/test",
+    #     TestAPIView.as_view(),
+    # ),
 ]
