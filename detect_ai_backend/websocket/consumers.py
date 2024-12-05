@@ -11,9 +11,9 @@ from detect_ai_backend.websocket.models import Websocket
 
 User = get_user_model()
 
-
 class WsConsumer(WebsocketConsumer):
     def connect(self):
+
         user = self.scope["user"]
         self.connection_id = uuid.uuid4().hex
         async_to_sync(self.channel_layer.group_add)(
@@ -22,8 +22,8 @@ class WsConsumer(WebsocketConsumer):
         Websocket.objects.create(**{"connection_id": self.connection_id, "user": user})
         self.accept()
 
-
     def disconnect(self, close_code):
+
         async_to_sync(
             self.channel_layer.group_discard(self.connection_id, self.channel_name)
         )
@@ -40,6 +40,7 @@ class WsConsumer(WebsocketConsumer):
         self.send(text_data=json.dumps({"type": "chat", "message": message}))
 
     def authenticate_user(self, token):
+
         try:
             # Validate the token
             validated_token = AccessToken(token)
