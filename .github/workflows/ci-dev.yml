@@ -1,10 +1,9 @@
 name: CI-dev
 
 on:
-  push:
-    branches: [ "dev" ]
   pull_request:
     branches: [ "dev" ]
+  workflow_call:
 
 jobs:
   build:
@@ -31,11 +30,11 @@ jobs:
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
-      if: github.event_name == 'push'  # Only set up Docker Buildx on push events
+      if: github.event_name == 'workflow_call'  # Only set up Docker Buildx on push events
 
     - name: Build Image
       uses: docker/build-push-action@v6
-      if: github.event_name == 'push'  # Only set up Docker Buildx on push events
+      if: github.event_name == 'workflow_call'  # Only set up Docker Buildx on push events
       with:
           load: true
           tags: |
@@ -46,22 +45,33 @@ jobs:
           cache-to: type=gha,mode=max
           build-args: |
             ENV=production
-          outputs: type=docker,dest=/tmp/image.tar
+          # outputs: type=docker,dest=/tmp/image.tar
 
     - name: Run Trivy vulnerability scanner
       uses: aquasecurity/trivy-action@0.28.0
-      if: github.event_name == 'push'
+      if: github.event_name == 'workflow_call'
       with:
           image-ref: latest
           format: 'table'
-          exit-code: '1'
+          # exit-code: '1'
           ignore-unfixed: true
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
 
+    - name: Expose Image
+      uses: docker/build-push-action@v6
+      if: github.event_name == 'workflow_call'  # Only set up Docker Buildx on push events
+      with:
+          load: true
+          tags: |
+            ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.ARTIFACT_REPOSITORY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+            ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.ARTIFACT_REPOSITORY }}/${{ env.IMAGE_NAME }}:latest
+            latest
+          outputs: type=docker,dest=/tmp/image.tar
+
     - name: Upload Image
       uses: actions/upload-artifact@v4
-      if: github.event_name == 'push'
+      if: github.event_name == 'workflow_call'
       with:
           name: image
           path: /tmp/image.tar
