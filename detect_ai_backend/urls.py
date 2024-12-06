@@ -23,7 +23,11 @@ from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 from rest_framework_simplejwt.views import TokenRefreshView
 
-from detect_ai_backend.api_keys.views import APIKeyListCreateView
+from detect_ai_backend.api_keys.views import (
+    APIKeyDestroyView,
+    APIKeyListCreateView,
+    APIKeyLogListView,
+)
 from detect_ai_backend.authentication.views import (
     CustomTokenObtainPairView,
     JWKView,
@@ -90,12 +94,23 @@ urlpatterns = [
         name="list_users",
     ),
     path(
+        "api/users/<str:id>",
+        ListUserView.as_view(),
+        name="list_users",
+    ),
+    path(
         "api/api-keys",
         APIKeyListCreateView.as_view(),
         name="list_create_api_key",
     ),
-    # path(
-    #     "api/test",
-    #     TestAPIView.as_view(),
-    # ),
+    path(
+        "api/api-keys/<str:id>",
+        APIKeyDestroyView.as_view(),
+        name="destroy_api_key",
+    ),
+    path(
+        "api/api-keys/<str:id>/usage",
+        APIKeyLogListView.as_view(),
+        name="list_create_api_key",
+    ),
 ]
