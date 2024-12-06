@@ -9,6 +9,12 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      IMAGE_NAME: ${{ vars.DEV_IMAGE_NAME }}
+      IMAGE_TAG: ${{ github.sha }}
+      PROJECT_ID: ${{ secrets.DEV_GCP_PROJECT_ID }}
+      ARTIFACT_REPOSITORY: ${{ vars.DEV_GCP_ARTIFACT_REPOSITORY }}
+      REGION: ${{ vars.DEV_GCP_REGION }}
     steps:
     - uses: actions/checkout@v3
     - name: Set up Python 3.10
