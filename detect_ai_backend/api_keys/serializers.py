@@ -36,3 +36,13 @@ class ListAPIKeySerializer(serializers.ModelSerializer):
             api_key = representation["api_key"]
             representation["api_key"] = api_key[:5] + "***" + api_key[-5:]
         return representation
+
+
+class StatusCountSerializer(serializers.Serializer):
+    status = serializers.CharField()
+    count = serializers.IntegerField()
+
+
+class DayGroupSerializer(serializers.Serializer):
+    day = serializers.DateField()
+    statuses = StatusCountSerializer(many=True)
