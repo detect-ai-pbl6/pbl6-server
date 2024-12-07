@@ -38,6 +38,17 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         data["refresh"] = str(refresh)
         data["access"] = str(refresh.access_token)
 
+        is_admin = False
+        if self.context["request"].headers["Origin"] == settings.ADMIN_ORIGIN:
+            if self.user.is_staff or self.user.is_superuser:
+                is_admin = True
+
+            if not is_admin:
+                data["access"] = ""
+                data["refresh"] = ""
+
+        data["is_admin"] = is_admin
+
         return data
 
 
