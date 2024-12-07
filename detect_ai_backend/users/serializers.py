@@ -23,20 +23,16 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    is_admin = serializers.SerializerMethodField()
 
     class Meta:
         model = User
-        fields = ["first_name", "last_name", "email", "avatar", "password", "is_admin"]
+        fields = ["first_name", "last_name", "email", "avatar", "password"]
         extra_kwargs = {
             "password": {"write_only": True, "min_length": 8},
             "email": {
                 "read_only": True,
             },
         }
-
-    def get_is_admin(self, instance):
-        return instance.is_staff or instance.is_superuser
 
 
 class UserUpdateResponseSerializer(serializers.ModelSerializer):
