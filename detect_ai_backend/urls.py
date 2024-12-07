@@ -63,13 +63,13 @@ urlpatterns = [
     ),
     # health
     path("api/health", lambda _: HttpResponse("OK")),
-    path(".well-known/jwks.json", JWKView.as_view()),
+    path(".well-known/jwks.json", JWKView.as_view(), name="jwk"),
     # auth
     path("admin/", admin.site.urls),
     path("api/auth/register", RegistrationAPIView.as_view(), name="register"),
     path("api/auth/login", CustomTokenObtainPairView.as_view(), name="login"),
     path("api/auth/refresh-token", TokenRefreshView.as_view(), name="refresh_token"),
-    path("api/auth/tokens", TokenView.as_view()),
+    path("api/auth/tokens", TokenView.as_view(), name="sessions_token"),
     path(
         "api/auth/login/socials",
         SocialsLoginView.as_view(),
