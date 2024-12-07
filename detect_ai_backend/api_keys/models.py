@@ -21,12 +21,12 @@ class APIKeyType(models.TextChoices):
 
 class APIKey(models.Model):
 
-    api_key = models.CharField(default=api_key_generator)
+    api_key = models.CharField(default=api_key_generator, max_length=42)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     last_used = models.DateTimeField(blank=True, null=True, default=None)
     api_key_type = models.CharField(
-        choices=APIKeyType.choices, default=APIKeyType.FREE_TIER
+        choices=APIKeyType.choices, default=APIKeyType.FREE_TIER, max_length=15
     )
     maximum_usage = models.IntegerField(default=0, validators=[MinValueValidator(0)])
     total_usage = models.BigIntegerField(default=0, validators=[MinValueValidator(0)])
@@ -60,5 +60,5 @@ class APIKeyLog(models.Model):
     api_key = models.ForeignKey(APIKey, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(default=timezone.now)
     status = models.CharField(
-        choices=APIKeyLogStatus.choices, default=APIKeyLogStatus.PENDING
+        choices=APIKeyLogStatus.choices, default=APIKeyLogStatus.PENDING, max_length=15
     )

@@ -98,4 +98,4 @@ ACCOUNT_DEFAULT_HTTP_PROTOCOL = "https"
 CHANNEL_LAYERS = {"default": {"BACKEND": "channels.layers.InMemoryChannelLayer"}}
 SUPERUSER_EMAIL = os.getenv("SUPERUSER_EMAIL", "")  # noqa
 SUPERUSER_PASSWORD = os.getenv("SUPERUSER_PASSWORD", "")  # noqa
-ADMIN_ORIGIN = os.getenv("ADMIN_ORIGIN", "") # noqa
+ADMIN_ORIGIN = os.getenv("ADMIN_ORIGIN", "")  # noqa

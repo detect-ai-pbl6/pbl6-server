@@ -96,7 +96,7 @@ urlpatterns = [
     path(
         "api/users/<str:id>",
         ListUserView.as_view(),
-        name="list_users",
+        name="list_single_user",
     ),
     path(
         "api/api-keys",
