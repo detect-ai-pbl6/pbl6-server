@@ -20,6 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Application definition
 
 INSTALLED_APPS = [
+    "daphne",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -33,9 +34,17 @@ INSTALLED_APPS = [
     "detect_ai_backend.users",
     "detect_ai_backend.authentication",
     "detect_ai_backend.files",
-    # "allauth",
-    # "allauth.account",
-    # "allauth.headless",
+    "detect_ai_backend.history",
+    "detect_ai_backend.websocket",
+    "detect_ai_backend.api_keys",
+    "allauth",
+    "allauth.account",
+    "allauth.headless",
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.google",
+    "allauth.socialaccount.providers.github",
+    # "silk",
+    "django_filters",
 ]
 
 MIDDLEWARE = [
@@ -48,7 +57,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    # "allauth.account.middleware.AccountMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
+    # "silk.middleware.SilkyMiddleware",
 ]
 
 ROOT_URLCONF = "detect_ai_backend.urls"
@@ -70,6 +80,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "detect_ai_backend.wsgi.application"
+ASGI_APPLICATION = "detect_ai_backend.asgi.application"
 
 
 # Password validation
@@ -127,13 +138,16 @@ REST_FRAMEWORK = {
     "DEFAULT_RENDERER_CLASSES": [
         "rest_framework.renderers.JSONRenderer",
     ],
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
+    "PAGE_SIZE": 20,
+    "DEFAULT_FILTER_BACKENDS": ("django_filters.rest_framework.DjangoFilterBackend",),
 }
 
 AUTHENTICATION_BACKENDS = [
     # Needed to login by username in Django admin, regardless of `allauth`
     "django.contrib.auth.backends.ModelBackend",
     # `allauth` specific authentication methods, such as login by email
-    # "allauth.account.auth_backends.AuthenticationBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
 ]
 
 # auth config
@@ -149,7 +163,8 @@ ACCOUNT_AUTHENTICATION_METHOD = "email"
 SWAGGER_SETTINGS = {
     "SECURITY_DEFINITIONS": {
         "Bearer": {"type": "apiKey", "name": "Authorization", "in": "header"}
-    }
+    },
+    "USE_SESSION_AUTH": True,
 }
 
 SIMPLE_JWT = {

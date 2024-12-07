@@ -1,0 +1,55 @@
+name: test-dev
+
+on:
+  pull_request:
+    branches: [ "dev" ]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  ci:
+    uses: ./.github/workflows/ci-dev.yml
+  unit-test:
+    runs-on: ubuntu-latest
+    needs: [ci]
+    env:
+      TEST_TAG: trivy-test
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.10"
+        cache: 'pip' # caching pip dependencies
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    - name: Run tests
+      run: |
+          python3 manage.py test --settings=detect_ai_backend.settings.test
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Build Image
+      uses: docker/build-push-action@v6
+      with:
+          load: true
+          tags: ${{ env.TEST_TAG }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            ENV=production
+
+    - name: Run Trivy vulnerability scanner
+      uses: aquasecurity/trivy-action@0.28.0
+      with:
+          image-ref: ${{ env.TEST_TAG }}
+          format: 'table'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'

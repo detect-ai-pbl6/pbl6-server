@@ -17,15 +17,26 @@ Including another URLconf
 from django.conf import settings
 from django.contrib import admin
 from django.http import HttpResponse
-from django.urls import path, re_path
+from django.urls import include, path, re_path
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 from rest_framework_simplejwt.views import TokenRefreshView
 
-from detect_ai_backend.authentication.views import CustomTokenObtainPairView, JWKView
+from detect_ai_backend.api_keys.views import (
+    APIKeyDestroyView,
+    APIKeyListCreateView,
+    APIKeyLogListView,
+)
+from detect_ai_backend.authentication.views import (
+    CustomTokenObtainPairView,
+    JWKView,
+    SocialsLoginView,
+    TokenView,
+)
 from detect_ai_backend.files.views import SignedGCPStorageURLView
 from detect_ai_backend.users.views import (
+    ListUserView,
     RegistrationAPIView,
     RetrieveUpdateUserProfileView,
 )
@@ -52,12 +63,21 @@ urlpatterns = [
     ),
     # health
     path("api/health", lambda _: HttpResponse("OK")),
-    path(".well-known/jwks.json", JWKView.as_view()),
+    path(".well-known/jwks.json", JWKView.as_view(), name="jwk"),
     # auth
     path("admin/", admin.site.urls),
     path("api/auth/register", RegistrationAPIView.as_view(), name="register"),
     path("api/auth/login", CustomTokenObtainPairView.as_view(), name="login"),
     path("api/auth/refresh-token", TokenRefreshView.as_view(), name="refresh_token"),
+    path("api/auth/tokens", TokenView.as_view(), name="sessions_token"),
+    path(
+        "api/auth/login/socials",
+        SocialsLoginView.as_view(),
+        name="social_auth",
+    ),
+    path("accounts/", include("allauth.urls")),
+    # Include the API endpoints:
+    path("_allauth/", include("allauth.headless.urls")),
     path(
         "api/files/signed-url",
         SignedGCPStorageURLView.as_view(),
@@ -67,5 +87,30 @@ urlpatterns = [
         "api/users/me",
         RetrieveUpdateUserProfileView.as_view(),
         name="retrieve_update_profile",
+    ),
+    path(
+        "api/users",
+        ListUserView.as_view(),
+        name="list_users",
+    ),
+    path(
+        "api/users/<str:id>",
+        ListUserView.as_view(),
+        name="list_single_user",
+    ),
+    path(
+        "api/api-keys",
+        APIKeyListCreateView.as_view(),
+        name="list_create_api_key",
+    ),
+    path(
+        "api/api-keys/<str:id>",
+        APIKeyDestroyView.as_view(),
+        name="destroy_api_key",
+    ),
+    path(
+        "api/api-keys/<str:id>/usage",
+        APIKeyLogListView.as_view(),
+        name="list_create_api_key",
     ),
 ]

@@ -1,7 +1,13 @@
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework import generics, permissions, response, status
 
+from detect_ai_backend.users.filters import UserFilter
 from detect_ai_backend.users.models import User
-from detect_ai_backend.users.serializers import RegistrationSerializer, UserSerializer
+from detect_ai_backend.users.serializers import (
+    RegistrationSerializer,
+    UserSerializer,
+    UserUpdateResponseSerializer,
+)
 
 
 class RegistrationAPIView(generics.GenericAPIView):
@@ -27,3 +33,19 @@ class RetrieveUpdateUserProfileView(generics.RetrieveUpdateAPIView):
 
     def get_object(self):
         return self.queryset.get(id=self.request.user.pk)
+
+    @swagger_auto_schema(responses={status.HTTP_200_OK: UserUpdateResponseSerializer})
+    def patch(self, request, *args, **kwargs):
+        return super().patch(request, *args, **kwargs)
+
+    @swagger_auto_schema(responses={status.HTTP_200_OK: UserUpdateResponseSerializer})
+    def put(self, request, *args, **kwargs):
+        return super().put(request, *args, **kwargs)
+
+
+class ListUserView(generics.ListAPIView):
+    serializer_class = UserUpdateResponseSerializer
+    permission_classes = [permissions.IsAdminUser]
+    queryset = User.objects.all()
+    filterset_fields = ("email",)
+    filterset_class = UserFilter
