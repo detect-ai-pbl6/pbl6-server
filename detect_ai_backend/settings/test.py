@@ -46,6 +46,19 @@ GCP_STORAGE_CLIENT = {}
 GCP_FILES_BUCKET = "abc"
 GCP_STORAGE_URL = f"https://storage.googleapis.com/{GCP_BUCKET_NAME}"  # noqa
 
+with open(f"{BASE_DIR}/settings/keys/private_key.pem", "r") as f:  # noqa
+    PRIVATE_KEY = f.read()
+
+with open(f"{BASE_DIR}/settings/keys/public_key.pem", "r") as f:  # noqa
+    PUBLIC_KEY = f.read()
+# JWT config
+
+SIMPLE_JWT.update(  # noqa
+    {
+        "SIGNING_KEY": PRIVATE_KEY,
+        "VERIFYING_KEY": PUBLIC_KEY,
+    }
+)
 
 SOCIALACCOUNT_PROVIDERS = {
     "google": {

@@ -1,7 +1,6 @@
 #!/bin/bash
 
 echo "Apply database migrations"
-python3 manage.py migrate zero
 python3 manage.py migrate
 
 echo "Starting collectstatic"
