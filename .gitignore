@@ -260,3 +260,5 @@ tags
 .pytest_cache
 
 .idea/
+
+*_local.py
