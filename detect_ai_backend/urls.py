@@ -27,7 +27,6 @@ from detect_ai_backend.api_keys.views import (
     APIKeyDestroyView,
     APIKeyListCreateView,
     APIKeyLogRetrieveView,
-    StatsAPIKeyLogListView,
 )
 from detect_ai_backend.authentication.views import (
     CustomTokenObtainPairView,
@@ -36,6 +35,7 @@ from detect_ai_backend.authentication.views import (
     TokenView,
 )
 from detect_ai_backend.files.views import SignedGCPStorageURLView
+from detect_ai_backend.stats.views import StatsAPIKeyLogListView, StatsCreatedUsersView
 from detect_ai_backend.users.views import (
     ListUserView,
     RegistrationAPIView,
@@ -118,5 +118,10 @@ urlpatterns = [
         "api/stats/api-keys",
         StatsAPIKeyLogListView.as_view(),
         name="list_stats_api_key",
+    ),
+    path(
+        "api/stats/users",
+        StatsCreatedUsersView.as_view(),
+        name="list_stats_users",
     ),
 ]
