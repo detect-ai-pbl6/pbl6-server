@@ -51,6 +51,7 @@ class APIKeyLogListView(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticated]
     lookup_field = "id"
     queryset = APIKeyLog.objects.all()
+    serializer_class = DayGroupSerializer
 
     def get_queryset(self):
         thirty_days_ago = now() - timedelta(days=30)
@@ -75,6 +76,6 @@ class APIKeyLogListView(generics.ListAPIView):
                 {"status": item["status"], "count": item["count"]}
             )
 
-        serializer = DayGroupSerializer(data=list(response_data.values()), many=True)
+        serializer = self.get_serializer(data=list(response_data.values()), many=True)
         serializer.is_valid(raise_exception=True)
         return response.Response(serializer.data)
