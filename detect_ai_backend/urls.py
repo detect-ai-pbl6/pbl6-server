@@ -26,7 +26,8 @@ from rest_framework_simplejwt.views import TokenRefreshView
 from detect_ai_backend.api_keys.views import (
     APIKeyDestroyView,
     APIKeyListCreateView,
-    APIKeyLogListView,
+    APIKeyLogRetrieveView,
+    StatsAPIKeyLogListView,
 )
 from detect_ai_backend.authentication.views import (
     CustomTokenObtainPairView,
@@ -110,7 +111,12 @@ urlpatterns = [
     ),
     path(
         "api/api-keys/<str:id>/usage",
-        APIKeyLogListView.as_view(),
-        name="list_create_api_key",
+        APIKeyLogRetrieveView.as_view(),
+        name="list_create_api_key_log",
+    ),
+    path(
+        "api/stats/api-keys",
+        StatsAPIKeyLogListView.as_view(),
+        name="list_stats_api_key",
     ),
 ]

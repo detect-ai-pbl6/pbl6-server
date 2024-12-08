@@ -60,6 +60,7 @@ jobs:
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
           output: trivy-result.txt
+          trivy-config: trivy.yml
 
     - name: Format Trivy Scan Result
       run: |
