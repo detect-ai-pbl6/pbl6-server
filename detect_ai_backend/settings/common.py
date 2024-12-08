@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     "detect_ai_backend.history",
     "detect_ai_backend.websocket",
     "detect_ai_backend.api_keys",
+    "detect_ai_backend.stats",
     "allauth",
     "allauth.account",
     "allauth.headless",
