@@ -46,6 +46,6 @@ class RetrieveUpdateUserProfileView(generics.RetrieveUpdateAPIView):
 class ListUserView(generics.ListAPIView):
     serializer_class = UserUpdateResponseSerializer
     permission_classes = [permissions.IsAdminUser]
-    queryset = User.objects.all()
-    filterset_fields = ("email",)
+    queryset = User.objects.all().order_by("-id")
+    filterset_fields = ("email", "is_active")
     filterset_class = UserFilter

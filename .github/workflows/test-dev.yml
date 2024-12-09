@@ -60,7 +60,7 @@ jobs:
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
           output: trivy-result.txt
-          skip-files: "private_key.pem"
+          skip-dirs: "**/keys"
 
     - name: Format Trivy Scan Result
       run: |
