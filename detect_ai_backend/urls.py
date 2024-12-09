@@ -35,7 +35,13 @@ from detect_ai_backend.authentication.views import (
     TokenView,
 )
 from detect_ai_backend.files.views import SignedGCPStorageURLView
-from detect_ai_backend.stats.views import StatsAPIKeyLogListView, StatsCreatedUsersView
+from detect_ai_backend.stats.views import (
+    StastsAPICallView,
+    StastsSuccessActionsView,
+    StatsAPIKeyLogListView,
+    StatsCreatedAPIKeysView,
+    StatsCreatedUsersView,
+)
 from detect_ai_backend.users.views import (
     ListUserView,
     RegistrationAPIView,
@@ -115,13 +121,28 @@ urlpatterns = [
         name="list_create_api_key_log",
     ),
     path(
-        "api/stats/api-keys",
+        "api/stats/api-key-logs",
         StatsAPIKeyLogListView.as_view(),
-        name="list_stats_api_key",
+        name="list_stats_api_key_logs",
     ),
     path(
         "api/stats/users",
         StatsCreatedUsersView.as_view(),
         name="list_stats_users",
+    ),
+    path(
+        "api/stats/api-keys",
+        StatsCreatedAPIKeysView.as_view(),
+        name="list_stats_api_keys",
+    ),
+    path(
+        "api/stats/api-call",
+        StastsAPICallView.as_view(),
+        name="list_stats_api_call",
+    ),
+    path(
+        "api/stats/api-call/success",
+        StastsSuccessActionsView.as_view(),
+        name="list_stats_api_call_success",
     ),
 ]
