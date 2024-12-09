@@ -77,7 +77,11 @@ def calculate_monthly_stats(
 
     return {
         response_field: current_month_count,
-        "growth_percentage": round(growth_percentage, 2),
+        "growth_percentage": (
+            f"+{round(growth_percentage, 2)}"
+            if growth_percentage >= 0
+            else f"{round(growth_percentage, 2)}"
+        ),
     }
 
 
