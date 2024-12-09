@@ -138,8 +138,9 @@ class StatsCreatedUsersViewTestCase(TestCase):
                 (current_month_count - last_month_count) / last_month_count
             ) * 100
 
-        self.assertAlmostEqual(
-            response.data["growth_percentage"], round(expected_growth_percentage, 2)
+        self.assertEqual(
+            response.data["growth_percentage"].replace("+", ""),
+            str(round(expected_growth_percentage, 2)),
         )
 
     def test_staff_and_superusers_are_excluded(self):
