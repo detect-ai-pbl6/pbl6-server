@@ -26,7 +26,13 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ["first_name", "last_name", "email", "avatar", "password"]
+        fields = [
+            "first_name",
+            "last_name",
+            "email",
+            "avatar",
+            "password",
+        ]
         extra_kwargs = {
             "password": {"write_only": True, "min_length": 8},
             "email": {
@@ -38,4 +44,12 @@ class UserSerializer(serializers.ModelSerializer):
 class UserUpdateResponseSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["first_name", "last_name", "email", "avatar"]
+        fields = [
+            "first_name",
+            "last_name",
+            "email",
+            "avatar",
+            "is_active",
+            "id",
+            "date_joined",
+        ]

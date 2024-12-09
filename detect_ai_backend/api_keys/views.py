@@ -16,7 +16,7 @@ from detect_ai_backend.api_keys.serializers import (
 
 class APIKeyListCreateView(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
-    queryset = APIKey.objects.all()
+    queryset = APIKey.objects.all().order_by("-id")
 
     def get_serializer_class(self):
         if self.request.method == "GET":
@@ -50,7 +50,7 @@ class APIKeyDestroyView(generics.DestroyAPIView):
 class APIKeyLogRetrieveView(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticated]
     lookup_field = "id"
-    queryset = APIKeyLog.objects.all()
+    queryset = APIKeyLog.objects.all().order_by("-id")
     serializer_class = DayGroupSerializer
 
     def get_queryset(self):

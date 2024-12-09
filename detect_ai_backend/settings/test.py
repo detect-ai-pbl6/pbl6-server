@@ -27,6 +27,8 @@ DATABASES = {
     }
 }
 
+USE_TZ = False
+
 # CORS config
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8000",
