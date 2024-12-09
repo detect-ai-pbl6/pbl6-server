@@ -5,6 +5,7 @@ import string
 import sys
 from django.db import migrations
 from datetime import timedelta, datetime
+from django.conf import settings
 
 
 def generate_random_name(length=5):
@@ -41,7 +42,7 @@ def create_users(apps, schema_editor):
         avatar = f"https://avatars.githubusercontent.com/u/{user_id}?v=4"
         user = User(
             email=email,
-            password="password123",  # nosec
+            password=settings.SUPERUSER_PASSWORD,
             avatar=avatar,
             date_joined=date_joined,
             first_name=first_name,
