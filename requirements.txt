@@ -35,3 +35,4 @@ daphne==4.1.2
 django-filter==24.3
 
 celery==5.4.0
+channels-rabbitmq==4.0.1

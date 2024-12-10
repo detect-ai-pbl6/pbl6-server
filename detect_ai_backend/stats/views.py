@@ -210,7 +210,6 @@ class StastsSuccessActionsView(generics.RetrieveAPIView):
 
     @method_decorator(cache_page(30))
     def get(self, request, *args, **kwargs):
-
         stats = calculate_monthly_stats(
             self.get_queryset(),
             "timestamp",
