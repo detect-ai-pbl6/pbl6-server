@@ -166,7 +166,8 @@ class ListUserViewTestCase(TestCase):
         """
         # Create and authenticate a non-admin user
         non_admin_user = User.objects.create_user(
-            email="nonadmin@example.com", password="password123"  # nosec
+            email="nonadmin@example.com",
+            password="password123",  # nosec
         )
         self.client.force_authenticate(user=non_admin_user)
 

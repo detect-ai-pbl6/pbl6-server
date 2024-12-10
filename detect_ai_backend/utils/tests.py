@@ -68,7 +68,6 @@ class GenerateUploadSignedURLV4Test(TestCase):
                 "detect_ai_backend.utils.gcp_storage.uuid.uuid4",
                 return_value=uuid.UUID("abcdefabcdefabcdefabcdefabcdefab"),
             ):
-
                 mock_blob = MagicMock()
                 mock_blob.generate_signed_url.side_effect = error
 

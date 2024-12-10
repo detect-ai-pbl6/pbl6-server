@@ -6,20 +6,16 @@ class StatsBase(serializers.Serializer):
 
 
 class StatsCreatedUsersSerializer(StatsBase):
-
     total_users_joined = serializers.IntegerField()
 
 
 class StastsAPIKeysCreateSerializer(StatsBase):
-
     total_api_keys_created = serializers.IntegerField()
 
 
 class StastsAPICallSerializer(StatsBase):
-
     total_api_calls = serializers.IntegerField()
 
 
 class StastsSuccessActionSerializer(StatsBase):
-
     total_successfull_actions = serializers.IntegerField()

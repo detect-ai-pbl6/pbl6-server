@@ -4,7 +4,6 @@ from detect_ai_backend.api_keys.models import APIKey
 
 
 class HasAPIKey(BasePermission):
-
     def has_permission(self, request, view):
         api_key = request.headers.get("x-api-key", "")
         is_authenticated = False

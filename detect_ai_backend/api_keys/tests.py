@@ -16,7 +16,8 @@ class APIKeyViewsTestCase(TestCase):
 
         # Create users
         self.user = User.objects.create_user(
-            email="testuser@example.com", password="testpass"  # nosec
+            email="testuser@example.com",
+            password="testpass",  # nosec
         )
         self.admin_user = User.objects.get(email=settings.SUPERUSER_EMAIL)
 
@@ -56,7 +57,8 @@ class APIKeyViewsTestCase(TestCase):
 
     def test_api_key_destroy_invalid_user(self):
         other_user = User.objects.create_user(
-            email="otheruser@example.com", password="otherpass"  # nosec
+            email="otheruser@example.com",
+            password="otherpass",  # nosec
         )
         other_api_key = APIKey.objects.create(user=other_user)
         self.client.force_authenticate(user=self.user)
@@ -73,10 +75,13 @@ class APIKeyLogRetrieveViewTestCase(TestCase):
         """
         # Create test users
         self.staff_user = User.objects.create_user(
-            email="staffuser@gmail.com", password="testpass", is_staff=True  # nosec
+            email="staffuser@gmail.com",
+            password="testpass",
+            is_staff=True,  # nosec
         )
         self.regular_user = User.objects.create_user(
-            email="regularuser@gmail.com", password="testpass"  # nosec
+            email="regularuser@gmail.com",
+            password="testpass",  # nosec
         )
 
         # Create API keys for users

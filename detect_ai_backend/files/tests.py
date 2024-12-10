@@ -15,7 +15,8 @@ class SignedGCPStorageURLViewTestCase(TestCase):
 
         # Create a test user
         self.user = User.objects.create_user(
-            email="testuser@example.com", password="testpassword123"  # nosec
+            email="testuser@example.com",
+            password="testpassword123",  # nosec
         )
 
         # Authenticate the user

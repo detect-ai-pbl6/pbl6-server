@@ -99,7 +99,8 @@ class StatsCreatedUsersViewTestCase(TestCase):
         """
         # Create a regular user
         regular_user = User.objects.create_user(
-            email="regularuser@gmail.com", password="testpass"  # nosec
+            email="regularuser@gmail.com",
+            password="testpass",  # nosec
         )
 
         self.client.force_authenticate(user=regular_user)

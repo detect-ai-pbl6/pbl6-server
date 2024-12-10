@@ -37,7 +37,6 @@ class JWKView(views.APIView):
 
 
 class TokenView(views.APIView):
-
     permission_classes = [permissions.IsAuthenticated]
     authentication_classes = [authentication.SessionAuthentication]
 

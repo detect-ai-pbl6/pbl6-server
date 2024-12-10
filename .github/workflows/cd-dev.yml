@@ -1,58 +1,59 @@
+---
 name: CD-dev
 
 on:
-  push:
-    branches: [ "dev" ]
+    push:
+        branches: [dev]
 
 jobs:
 
-  deploy:
-    runs-on: ubuntu-latest
-    env:
-      IMAGE_NAME: ${{ vars.DEV_IMAGE_NAME }}
-      IMAGE_TAG: ${{ github.sha }}
-      PROJECT_ID: ${{ secrets.DEV_GCP_PROJECT_ID }}
-      ARTIFACT_REPOSITORY: ${{ vars.DEV_GCP_ARTIFACT_REPOSITORY }}
-      REGION: ${{ vars.DEV_GCP_REGION }}
-      TEST_TAG: trivy-test
+    deploy:
+        runs-on: ubuntu-latest
+        env:
+            IMAGE_NAME: ${{ vars.DEV_IMAGE_NAME }}
+            IMAGE_TAG: ${{ github.sha }}
+            PROJECT_ID: ${{ secrets.DEV_GCP_PROJECT_ID }}
+            ARTIFACT_REPOSITORY: ${{ vars.DEV_GCP_ARTIFACT_REPOSITORY }}
+            REGION: ${{ vars.DEV_GCP_REGION }}
+            TEST_TAG: trivy-test
 
-    steps:
+        steps:
 
-    - name: code checkout
-      uses: actions/checkout@v2
+            - name: code checkout
+              uses: actions/checkout@v2
 
-    - name: GCP Authentication
-      uses: 'google-github-actions/auth@v2'
-      id: gcp_authentication
-      with:
-        credentials_json: '${{ secrets.DEV_GCP_CREDENTIALS }}'
+            - name: GCP Authentication
+              uses: google-github-actions/auth@v2
+              id: gcp_authentication
+              with:
+                  credentials_json: ${{ secrets.DEV_GCP_CREDENTIALS }}
 
-    - name: Set up Cloud SDK
-      uses: 'google-github-actions/setup-gcloud@v2'
+            - name: Set up Cloud SDK
+              uses: google-github-actions/setup-gcloud@v2
 
-    - name: Configure Docker Client
-      run: |-
-        gcloud auth configure-docker --quiet
-        gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev --quiet
+            - name: Configure Docker Client
+              run: |-
+                  gcloud auth configure-docker --quiet
+                  gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev --quiet
 
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v3
+            - name: Set up Docker Buildx
+              uses: docker/setup-buildx-action@v3
 
-    - name: Build and Push Image
-      uses: docker/build-push-action@v6
-      with:
-          push: true
-          tags:  |
-            ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.ARTIFACT_REPOSITORY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
-            ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.ARTIFACT_REPOSITORY }}/${{ env.IMAGE_NAME }}:latest
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-          build-args: |
-            ENV=production
+            - name: Build and Push Image
+              uses: docker/build-push-action@v6
+              with:
+                  push: true
+                  tags: |
+                      ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.ARTIFACT_REPOSITORY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+                      ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.ARTIFACT_REPOSITORY }}/${{ env.IMAGE_NAME }}:latest
+                  cache-from: type=gha
+                  cache-to: type=gha,mode=max
+                  build-args: |
+                      ENV=production
 
-    - name: Deploy to Cloudrun
-      uses: 'google-github-actions/deploy-cloudrun@v2'
-      with:
-        image: ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.ARTIFACT_REPOSITORY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
-        service: 'pbl6-dev-cloudrun-backend'
-        region: ${{ env.REGION }}
+            - name: Deploy to Cloudrun
+              uses: google-github-actions/deploy-cloudrun@v2
+              with:
+                  image: ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.ARTIFACT_REPOSITORY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+                  service: pbl6-dev-cloudrun-backend
+                  region: ${{ env.REGION }}

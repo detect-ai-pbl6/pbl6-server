@@ -4,7 +4,6 @@ from detect_ai_backend.api_keys.models import APIKey
 
 
 class CreateAPIKeySerializer(serializers.ModelSerializer):
-
     class Meta:
         model = APIKey
         exclude = ["user"]
@@ -18,7 +17,6 @@ class CreateAPIKeySerializer(serializers.ModelSerializer):
 
 
 class ListAPIKeySerializer(serializers.ModelSerializer):
-
     class Meta:
         model = APIKey
         exclude = ["user"]
