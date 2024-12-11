@@ -75,17 +75,17 @@ SOCIALACCOUNT_PROVIDERS = {
             "key": "",
         },
     },
-    # "github": {
-    #     "SCOPE": [
-    #         "user",
-    #         "repo",
-    #         "read:org",
-    #     ],
-    #     "APP": {
-    #         "client_id": os.getenv("GITHUB_CLIENT_ID", ""),  # noqa
-    #         "secret": os.getenv("GITHUB_SECRET", ""),  # noqa
-    #     },
-    # },
+    "github": {
+        "SCOPE": [
+            "user",
+            "repo",
+            "read:org",
+        ],
+        "APP": {
+            "client_id": os.getenv("GITHUB_CLIENT_ID", ""),  # noqa
+            "secret": os.getenv("GITHUB_SECRET", ""),  # noqa
+        },
+    },
 }
 
 SESSION_COOKIE_SAMESITE = "None"
