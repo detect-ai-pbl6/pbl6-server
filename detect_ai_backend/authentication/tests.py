@@ -18,7 +18,6 @@ class CustomTokenObtainPairViewTest(TestCase):
         self.login_url = reverse("login")
 
     def test_login_success(self):
-
         response = self.client.post(
             self.login_url,
             self.user_data,
@@ -28,7 +27,6 @@ class CustomTokenObtainPairViewTest(TestCase):
         self.assertIn("refresh", response.data)
 
     def test_login_failed(self):
-
         response = self.client.post(
             self.login_url,
             {**self.user_data, "password": "123456"},

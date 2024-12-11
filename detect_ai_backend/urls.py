@@ -26,7 +26,7 @@ from rest_framework_simplejwt.views import TokenRefreshView
 from detect_ai_backend.api_keys.views import (
     APIKeyDestroyView,
     APIKeyListCreateView,
-    APIKeyLogListView,
+    APIKeyLogRetrieveView,
 )
 from detect_ai_backend.authentication.views import (
     CustomTokenObtainPairView,
@@ -35,6 +35,14 @@ from detect_ai_backend.authentication.views import (
     TokenView,
 )
 from detect_ai_backend.files.views import SignedGCPStorageURLView
+from detect_ai_backend.predictions.views import PredictionCreateView
+from detect_ai_backend.stats.views import (
+    StastsAPICallView,
+    StastsSuccessActionsView,
+    StatsAPIKeyLogListView,
+    StatsCreatedAPIKeysView,
+    StatsCreatedUsersView,
+)
 from detect_ai_backend.users.views import (
     ListUserView,
     RegistrationAPIView,
@@ -110,7 +118,37 @@ urlpatterns = [
     ),
     path(
         "api/api-keys/<str:id>/usage",
-        APIKeyLogListView.as_view(),
-        name="list_create_api_key",
+        APIKeyLogRetrieveView.as_view(),
+        name="list_create_api_key_log",
+    ),
+    path(
+        "api/stats/api-key-logs",
+        StatsAPIKeyLogListView.as_view(),
+        name="list_stats_api_key_logs",
+    ),
+    path(
+        "api/stats/users",
+        StatsCreatedUsersView.as_view(),
+        name="list_stats_users",
+    ),
+    path(
+        "api/stats/api-keys",
+        StatsCreatedAPIKeysView.as_view(),
+        name="list_stats_api_keys",
+    ),
+    path(
+        "api/stats/api-call",
+        StastsAPICallView.as_view(),
+        name="list_stats_api_call",
+    ),
+    path(
+        "api/stats/api-call/success",
+        StastsSuccessActionsView.as_view(),
+        name="list_stats_api_call_success",
+    ),
+    path(
+        "api/predictions",
+        PredictionCreateView.as_view(),
+        name="prediction_create_api_view",
     ),
 ]

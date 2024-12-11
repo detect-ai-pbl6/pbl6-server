@@ -8,6 +8,4 @@ class UserFilter(filters.FilterSet):
 
     class Meta:
         model = User
-        fields = [
-            "email",
-        ]
+        fields = ["email", "is_active"]

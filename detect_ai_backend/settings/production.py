@@ -75,17 +75,17 @@ SOCIALACCOUNT_PROVIDERS = {
             "key": "",
         },
     },
-    # "github": {
-    #     "SCOPE": [
-    #         "user",
-    #         "repo",
-    #         "read:org",
-    #     ],
-    #     "APP": {
-    #         "client_id": os.getenv("GITHUB_CLIENT_ID", ""),  # noqa
-    #         "secret": os.getenv("GITHUB_SECRET", ""),  # noqa
-    #     },
-    # },
+    "github": {
+        "SCOPE": [
+            "user",
+            "repo",
+            "read:org",
+        ],
+        "APP": {
+            "client_id": os.getenv("GITHUB_CLIENT_ID", ""),  # noqa
+            "secret": os.getenv("GITHUB_SECRET", ""),  # noqa
+        },
+    },
 }
 
 SESSION_COOKIE_SAMESITE = "None"
@@ -99,3 +99,11 @@ CHANNEL_LAYERS = {"default": {"BACKEND": "channels.layers.InMemoryChannelLayer"}
 SUPERUSER_EMAIL = os.getenv("SUPERUSER_EMAIL", "")  # noqa
 SUPERUSER_PASSWORD = os.getenv("SUPERUSER_PASSWORD", "")  # noqa
 ADMIN_ORIGIN = os.getenv("ADMIN_ORIGIN", "")  # noqa
+
+MESSAGE_BROKER_USERNAME = os.getenv("MESSAGE_BROKER_USERNAME", "")  # noqa
+MESSAGE_BROKER_PASSWORD = os.getenv("MESSAGE_BROKER_PASSWORD", "")  # noqa
+MESSAGE_BROKER_HOST = os.getenv("MESSAGE_BROKER_HOST", "")  # noqa
+MESSAGE_BROKER_VHOST = os.getenv("MESSAGE_BROKER_VHOST", "")  # noqa
+CELERY_APP_NAME = "detect_ai_backend"
+CELERY_BROKER_URL = f"amqp://{MESSAGE_BROKER_USERNAME}:{MESSAGE_BROKER_PASSWORD}@{MESSAGE_BROKER_HOST}/{MESSAGE_BROKER_VHOST}"  # noqa
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
