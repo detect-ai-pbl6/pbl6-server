@@ -21,9 +21,9 @@ async def publish(connection_ids: list[str], message):
 
 
 @shared_task(name=f"{settings.APP_NAME}.predict_result")
-def handle_predict_result():
-    websockets = Websocket.objects.filter(user__email="admin@gmail.com")
+def handle_predict_result(payload):
+    websockets = Websocket.objects.filter(user__email=payload["email"])
     connection_ids = [websocket.connection_id for websocket in websockets]
-    message = {"type": "chat_message", "message": "abc"}
+    message = {**payload["results"]}
     for connection_id in connection_ids:
         publish_message_to_group(message=message, group=connection_id)
