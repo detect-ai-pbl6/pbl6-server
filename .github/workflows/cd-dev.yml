@@ -51,9 +51,23 @@ jobs:
                   build-args: |
                       ENV=production
 
-            - name: Deploy to Cloudrun
-              uses: google-github-actions/deploy-cloudrun@v2
-              with:
-                  image: ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.ARTIFACT_REPOSITORY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
-                  service: pbl6-dev-cloudrun-backend
-                  region: ${{ env.REGION }}
+            - name: Deploy to VMs
+              run: |
+                  instances=$(gcloud compute instances list --filter="name~'-backend-'" --format="csv(name,zone)" | tail -n +2)
+
+                  # Loop through each instance
+                  while IFS=',' read -r name zone; do
+                      echo "Executing command on instance: $name in zone: $zone"
+
+                      # SSH into the instance and run a command (e.g., `uptime`)
+                      gcloud compute ssh "$name" --tunnel-through-iap \
+                          --zone "$zone" \
+                          --command "
+                              gcloud auth configure-docker --quiet
+                              gcloud auth configure-docker  ${{ env.REGION }}-docker.pkg.dev --quiet
+                              sudo yq e '.services."backend-service".image = \"${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.ARTIFACT_REPOSITORY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}\"' -i /etc/docker/docker-compose.yml
+                              cd /etc/docker
+                              sudo docker rollout backend-service
+                              sudo docker image prune --all -f"
+
+                  done <<<"$instances"
