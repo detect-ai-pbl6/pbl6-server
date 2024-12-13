@@ -1,5 +1,5 @@
 from rest_framework import serializers
 
 
-class PredictionsSerializers(serializers.Serializer):
+class PredictionsSerializer(serializers.Serializer):
     image_url = serializers.URLField()

@@ -31,12 +31,11 @@ class WsConsumer(WebsocketConsumer):
     def receive(self, text_data):
         pass
 
-    def chat_message(self, event):
-        print("EVENT TRIGERED")
+    def send_result(self, event):
         # Receive message from room group
         message = event["message"]
         # Send message to WebSocket
-        self.send(text_data=json.dumps({"type": "chat", "message": message}))
+        self.send(text_data=json.dumps(message))
 
     def authenticate_user(self, token):
         try:

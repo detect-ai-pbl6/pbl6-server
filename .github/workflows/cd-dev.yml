@@ -67,7 +67,9 @@ jobs:
                               gcloud auth configure-docker  ${{ env.REGION }}-docker.pkg.dev --quiet
                               sudo yq e '.services."backend-service".image = \"${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.ARTIFACT_REPOSITORY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}\"' -i /etc/docker/docker-compose.yml
                               cd /etc/docker
-                              sudo docker rollout backend-service
+                              sudo docker pull ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.ARTIFACT_REPOSITORY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+                              sudo docker compose down
+                              sudo docker compose up -d --build
                               sudo docker image prune --all -f"
 
                   done <<<"$instances"
