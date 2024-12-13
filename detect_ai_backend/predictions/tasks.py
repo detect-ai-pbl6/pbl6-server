@@ -27,3 +27,9 @@ def handle_predict_result(payload):
     message = {**payload["results"]}
     for connection_id in connection_ids:
         publish_message_to_group(message=message, group=connection_id)
+
+    # user = User.objects.get(email=payload["email"])
+    # history = History(
+    #     user=user,
+    # )
+    # history.save()
