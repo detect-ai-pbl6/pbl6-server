@@ -1,10 +1,15 @@
+import logging
+
 from channels.auth import BaseMiddleware
 from channels.db import database_sync_to_async
 from django.contrib.auth.models import AnonymousUser
+from django.urls.exceptions import Resolver404
 from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
 from rest_framework_simplejwt.tokens import AccessToken
 
 from detect_ai_backend.users.models import User
+
+logger = logging.getLogger(__name__)
 
 
 @database_sync_to_async
@@ -69,3 +74,25 @@ class AuthMiddleware(BaseMiddleware):
 
 def AuthMiddlewareStack(inner):
     return AuthMiddleware(inner)
+
+
+class HandleRouteNotFoundMiddleware(BaseMiddleware):
+
+    def __init__(self, inner):
+        self.inner = inner
+
+    async def __call__(self, scope, receive, send):
+        try:
+            inner_instance = await self.inner(scope, receive, send)
+            return inner_instance
+        except (Resolver404, ValueError) as e:
+            if "No route found for path" not in str(e) and scope["type"] not in [
+                "http",
+                "websocket",
+            ]:
+                raise e
+            elif scope["type"] == "websocket":
+                return self.handle_ws_route_error
+
+    async def handle_ws_route_error(self, receive, send):
+        await send({"type": "websocket.close", "code": 4001})
