@@ -15,16 +15,18 @@ from django.core.asgi import get_asgi_application
 
 asgi_application = get_asgi_application()  # noqa
 
-from django.urls import re_path  # noqa
+from django.urls import path  # noqa
 
-from detect_ai_backend.utils.authentication import AuthMiddlewareStack  # noqa
+from detect_ai_backend.utils.authentication import (  # noqa
+    AuthMiddlewareStack,
+    HandleRouteNotFoundMiddleware,
+)
 from detect_ai_backend.websocket import consumers  # noqa
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "detect_ai_backend.settings.production")
 
 websocket_urlpatterns = [
-    re_path(r"ws", consumers.WsConsumer.as_asgi()),
-    re_path(r"", consumers.Handle404Consumer.as_asgi()),
+    path(r"ws", consumers.WsConsumer.as_asgi()),
 ]
 
 application = ProtocolTypeRouter(
@@ -32,7 +34,9 @@ application = ProtocolTypeRouter(
         "http": asgi_application,
         # Just HTTP for now. (We can add other protocols later.)
         "websocket": AllowedHostsOriginValidator(
-            AuthMiddlewareStack(URLRouter(websocket_urlpatterns))
+            AuthMiddlewareStack(
+                HandleRouteNotFoundMiddleware(URLRouter(websocket_urlpatterns))
+            )
         ),
     }
 )
