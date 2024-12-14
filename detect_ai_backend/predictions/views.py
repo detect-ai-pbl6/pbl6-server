@@ -19,6 +19,11 @@ class PredictionCreateView(generics.CreateAPIView):
 
     @swagger_auto_schema(manual_parameters=[get_api_key_header()])
     def post(self, request, *args, **kwargs):
+
+        api_key = self.request.api_key
+        api_key.total_usage += 1
+        api_key.save()
+
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         validated_data = serializer.validated_data

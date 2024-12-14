@@ -9,3 +9,4 @@ class History(models.Model):
     image_url = models.TextField()
     results = models.JSONField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
