@@ -35,6 +35,7 @@ from detect_ai_backend.authentication.views import (
     TokenView,
 )
 from detect_ai_backend.files.views import SignedGCPStorageURLView
+from detect_ai_backend.history.views import ListHistoryView, ListRecentHistoryView
 from detect_ai_backend.predictions.views import PredictionCreateView
 from detect_ai_backend.stats.views import (
     StastsAPICallView,
@@ -150,5 +151,15 @@ urlpatterns = [
         "api/predictions",
         PredictionCreateView.as_view(),
         name="prediction_create_api_view",
+    ),
+    path(
+        "api/history",
+        ListHistoryView.as_view(),
+        name="list_history_api_view",
+    ),
+    path(
+        "api/history/recencies",
+        ListRecentHistoryView.as_view(),
+        name="list_history_api_view",
     ),
 ]

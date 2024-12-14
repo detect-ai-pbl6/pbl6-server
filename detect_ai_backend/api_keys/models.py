@@ -46,6 +46,9 @@ class APIKey(models.Model):
                 key.is_default = False
                 key.save()
 
+        if self.total_usage > self.maximum_usage:
+            self.total_usage = self.maximum_usage
+
         super().save(*args, **kwargs)
 
 

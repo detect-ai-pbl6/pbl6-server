@@ -1,9 +1,16 @@
-from rest_framework.permissions import BasePermission
+from django.utils.translation import gettext_lazy as _
+from rest_framework import exceptions, permissions, status
 
 from detect_ai_backend.api_keys.models import APIKey
 
 
-class HasAPIKey(BasePermission):
+class LimitExceededException(exceptions.APIException):
+    status_code = status.HTTP_422_UNPROCESSABLE_ENTITY
+    default_detail = _("API key usage limit exceeded")
+    default_code = "api_key_limit_exceedd"
+
+
+class HasAPIKey(permissions.BasePermission):
     def has_permission(self, request, view):
         api_key = request.headers.get("x-api-key", "")
         is_authenticated = False
@@ -13,6 +20,8 @@ class HasAPIKey(BasePermission):
                 api_key_instance = APIKey.objects.get(
                     api_key=api_key, user=request.user
                 )
+                if api_key_instance.total_usage >= api_key_instance.maximum_usage:
+                    raise LimitExceededException
                 is_authenticated = True
             except APIKey.DoesNotExist:
                 pass
