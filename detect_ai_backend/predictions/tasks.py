@@ -23,6 +23,11 @@ async def publish(connection_ids: list[str], message):
     )
 
 
+def single_publish(connection_id, message):
+    channel_layer = get_channel_layer()
+    channel_layer.group_send(connection_id, message)
+
+
 @shared_task(name=f"{settings.APP_NAME}.predict_result")
 def handle_predict_result(payload):
     email = payload.pop("email", "")
