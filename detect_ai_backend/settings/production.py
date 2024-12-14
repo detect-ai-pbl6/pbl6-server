@@ -95,7 +95,7 @@ CSRF_COOKIE_SECURE = True
 
 ACCOUNT_DEFAULT_HTTP_PROTOCOL = "https"
 
-CHANNEL_LAYERS = {"default": {"BACKEND": "channels.layers.InMemoryChannelLayer"}}
+
 SUPERUSER_EMAIL = os.getenv("SUPERUSER_EMAIL", "")  # noqa
 SUPERUSER_PASSWORD = os.getenv("SUPERUSER_PASSWORD", "")  # noqa
 ADMIN_ORIGIN = os.getenv("ADMIN_ORIGIN", "")  # noqa
@@ -106,5 +106,13 @@ MESSAGE_BROKER_HOST = os.getenv("MESSAGE_BROKER_HOST", "")  # noqa
 MESSAGE_BROKER_VHOST = os.getenv("MESSAGE_BROKER_VHOST", "")  # noqa
 CELERY_APP_NAME = "detect_ai_backend"
 CELERY_BROKER_URL = f"amqp://{MESSAGE_BROKER_USERNAME}:{MESSAGE_BROKER_PASSWORD}@{MESSAGE_BROKER_HOST}/{MESSAGE_BROKER_VHOST}"  # noqa
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_rabbitmq.core.RabbitmqChannelLayer",
+        "CONFIG": {
+            "host": f"amqp://{MESSAGE_BROKER_USERNAME}:{MESSAGE_BROKER_PASSWORD}@{MESSAGE_BROKER_HOST}/{MESSAGE_BROKER_VHOST}",  # noqa
+        },
+    }
+}
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 AI_SERVER_NAME = os.getenv("AI_SERVER_NAME", "")  # noqa

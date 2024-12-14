@@ -20,7 +20,7 @@ class APIKeyType(models.TextChoices):
 
 
 class APIKey(models.Model):
-    api_key = models.CharField(default=api_key_generator, max_length=42)
+    api_key = models.CharField(default=api_key_generator, max_length=42, editable=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     last_used = models.DateTimeField(blank=True, null=True, default=None)
