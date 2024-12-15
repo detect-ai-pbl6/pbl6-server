@@ -16,9 +16,10 @@ app = Celery(settings.CELERY_APP_NAME)
 app.config_from_object(settings, namespace="CELERY")
 
 # Load task modules from all registered Django apps.
-app.autodiscover_tasks()
+app.autodiscover_tasks(settings.CELERY_TASKS)
 app.conf.result_backend = "rpc://"
 app.conf.task_default_queue = f"{settings.CELERY_APP_NAME}_queue"
+app.conf.broker_connection_retry_on_startup = True
 # app.conf.task_queues = app.conf.task_queues + (
 #         Queue(
 #             f"{settings.SERVICE_NAME}_new_organization",

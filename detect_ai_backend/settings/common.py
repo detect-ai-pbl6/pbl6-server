@@ -195,3 +195,8 @@ SIMPLE_JWT = {
 }
 
 HEADLESS_ONLY = True
+
+CELERY_TASKS = [
+    "detect_ai_backend.predictions",
+    "detect_ai_backend.history",
+]

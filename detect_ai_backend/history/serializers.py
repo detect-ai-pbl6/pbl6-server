@@ -4,6 +4,12 @@ from detect_ai_backend.history.models import History
 
 
 class ListHistorySerializer(serializers.ModelSerializer):
+
+    user = serializers.SerializerMethodField()
+
     class Meta:
         model = History
-        exclude = ["user"]
+        fields = "__all__"
+
+    def get_user(self, obj):
+        return obj.user.email

@@ -6,6 +6,7 @@ from django.shortcuts import get_object_or_404
 from django.utils.timezone import now
 from rest_framework import exceptions, generics, permissions, response
 
+from detect_ai_backend.api_keys.filters import APIKeysFilter
 from detect_ai_backend.api_keys.models import APIKey, APIKeyLog, APIKeyLogStatus
 from detect_ai_backend.api_keys.serializers import (
     CreateAPIKeySerializer,
@@ -16,7 +17,7 @@ from detect_ai_backend.api_keys.serializers import (
 
 class APIKeyListCreateView(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
-    queryset = APIKey.objects.all().order_by("-id")
+    filterset_class = APIKeysFilter
 
     def get_serializer_class(self):
         if self.request.method == "GET":
@@ -26,9 +27,15 @@ class APIKeyListCreateView(generics.ListCreateAPIView):
     def get_queryset(self):
         if self.request.user.is_authenticated:
             if self.request.user.is_staff or self.request.user.is_superuser:
-                return self.queryset
-            return self.queryset.filter(user=self.request.user)
-        return self.queryset.none()
+                return APIKey.objects.all().order_by("-id").select_related("user")
+            self.filterset_class = None
+            return (
+                APIKey.objects.all()
+                .order_by("-id")
+                .filter(user=self.request.user)
+                .select_related("user")
+            )
+        return APIKey.objects.none()
 
     def perform_create(self, serializer):
         return serializer.save(user=self.request.user)
