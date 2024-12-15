@@ -17,9 +17,11 @@ class CreateAPIKeySerializer(serializers.ModelSerializer):
 
 
 class ListAPIKeySerializer(serializers.ModelSerializer):
+    user = serializers.SerializerMethodField()
+
     class Meta:
         model = APIKey
-        exclude = ["user"]
+        fields = "__all__"
         extra_kwargs = {
             "total_usage": {"read_only": True},
             "api_key": {"read_only": True},
@@ -27,6 +29,9 @@ class ListAPIKeySerializer(serializers.ModelSerializer):
                 "read_only": True,
             },
         }
+
+    def get_user(self, obj):
+        return obj.user.email
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)

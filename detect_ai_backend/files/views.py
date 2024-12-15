@@ -8,7 +8,7 @@ from detect_ai_backend.files.serializers import (
     SignedGCPStorageURLRequestSerializer,
     SignedGCPStorageURLResponseSerializer,
 )
-from detect_ai_backend.utils.gcp_storage import generate_upload_signed_url_v4
+from detect_ai_backend.utils.gcp import generate_upload_signed_url_v4
 
 
 class SignedGCPStorageURLView(generics.CreateAPIView):

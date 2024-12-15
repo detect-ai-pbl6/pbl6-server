@@ -114,5 +114,4 @@ CHANNEL_LAYERS = {
         },
     }
 }
-CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 AI_SERVER_NAME = os.getenv("AI_SERVER_NAME", "")  # noqa
