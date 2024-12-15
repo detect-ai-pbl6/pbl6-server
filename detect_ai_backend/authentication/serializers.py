@@ -9,6 +9,7 @@ from rest_framework_simplejwt.serializers import (
 )
 from rest_framework_simplejwt.settings import api_settings
 
+from detect_ai_backend.api_keys.models import APIKey
 from detect_ai_backend.authentication.models import (
     RefreshToken,
     RefreshTokenFamily,
@@ -49,6 +50,14 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 
         data["is_admin"] = is_admin
 
+        api_key = ""
+        try:
+            api_key_instance = APIKey.objects.get(user=self.user, is_default=True)
+            api_key = api_key_instance.api_key
+        except APIKey.DoesNotExist:
+            pass
+
+        data["api_key"] = api_key
         return data
 
 

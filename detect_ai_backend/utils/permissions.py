@@ -10,6 +10,12 @@ class LimitExceededException(exceptions.APIException):
     default_code = "api_key_limit_exceedd"
 
 
+class APIKeyNotDefaultException(exceptions.APIException):
+    status_code = status.HTTP_422_UNPROCESSABLE_ENTITY
+    default_detail = _("This API key is not enable for use.")
+    default_code = "api_key_not_default"
+
+
 class HasAPIKey(permissions.BasePermission):
     def has_permission(self, request, view):
         api_key = request.headers.get("x-api-key", "")
@@ -22,6 +28,8 @@ class HasAPIKey(permissions.BasePermission):
                 )
                 if api_key_instance.total_usage >= api_key_instance.maximum_usage:
                     raise LimitExceededException
+                if not api_key_instance.is_default:
+                    raise APIKeyNotDefaultException
                 is_authenticated = True
             except APIKey.DoesNotExist:
                 pass
