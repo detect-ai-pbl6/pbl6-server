@@ -39,6 +39,7 @@ def generate_upload_signed_url_v4(mime_type: str):
                     except RefreshError:
                         logger.error("Failed to refresh credentials")
                         break
+                logger.error(f"Failed to generate signed URL (Attempt {attempt + 1})")
         raise RuntimeError("Unable to generate signed URL after multiple attempts")
 
     file_name = str(uuid.uuid4())

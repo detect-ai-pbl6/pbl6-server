@@ -46,7 +46,7 @@ SIMPLE_JWT.update(  # noqa
 # CORS config
 CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "").split(",")  # noqa
 CORS_ALLOW_CREDENTIALS = True
-
+CORS_ALLOW_HEADERS = ["*"]
 # CSRF
 CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS", "").split(",")  # noqa
 
