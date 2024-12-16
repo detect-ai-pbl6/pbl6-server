@@ -57,7 +57,7 @@ class APIKeyDestroyView(generics.DestroyAPIView):
 class APIKeyLogRetrieveView(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticated]
     lookup_field = "id"
-    queryset = APIKeyLog.objects.all().order_by("-id")
+    queryset = APIKeyLog.objects.all().order_by("-id").select_related("api_key__user")
     serializer_class = DayGroupSerializer
 
     def get_queryset(self):

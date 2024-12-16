@@ -29,7 +29,7 @@ class ListRecentHistoryView(ListHistoryView):
 
     permission_classes = [permissions.IsAdminUser]
     pagination_class = None
-    queryset = History.objects.all()
+    queryset = History.objects.all().select_related("user")
 
     def get_queryset(self):
         return self.queryset.order_by("-created_at")[:7]
