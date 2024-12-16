@@ -20,7 +20,7 @@ class WsConsumer(WebsocketConsumer):
             str(self.connection_id), self.channel_name
         )
         Websocket.objects.create(**{"connection_id": self.connection_id, "user": user})
-        self.accept()
+        self.accept("Token")
 
     def disconnect(self, close_code):
         async_to_sync(
