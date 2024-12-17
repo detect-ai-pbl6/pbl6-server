@@ -15,11 +15,27 @@ class RegistrationAPIViewTestCase(TestCase):
         )  # Adjust the URL name as per your urls.py
         self.valid_payload = {
             "email": "newuser@example.com",
-            "password": "securepassword123",
+            "password": "securepassword1!Q",
             "first_name": "John",
             "last_name": "Doe",
         }
-        self.invalid_payload = {"email": "invalid-email", "password": "short"}
+        self.invalid_password_length = {
+            "email": "invalid-password-length@example.com",
+            "password": "short",
+        }
+        self.invalid_email = {"email": "invalid", "password": "securepassword1!Q"}
+        self.invalid_password_special_letter = {
+            "email": "invalid-password-special-letter@example.com",
+            "password": "securepassword1Q",
+        }
+        self.invalid_password_upper_case_letter = {
+            "email": "invalid-password-length@example.com",
+            "password": "securepassword1!",
+        }
+        self.invalid_password_number = {
+            "email": "invalid-password-length@example.com",
+            "password": "securepassword!Q",
+        }
 
     def test_registration_success(self):
         """
@@ -34,11 +50,47 @@ class RegistrationAPIViewTestCase(TestCase):
         # Verify user was actually created
         self.assertTrue(User.objects.filter(email=self.valid_payload["email"]).exists())
 
-    def test_registration_invalid_data(self):
+    def test_registration_invalid_password_length(self):
         """
         Test registration with invalid payload
         """
-        response = self.client.post(self.registration_url, self.invalid_payload)
+        response = self.client.post(self.registration_url, self.invalid_password_length)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_registration_invalid_email(self):
+        """
+        Test registration with invalid payload
+        """
+        response = self.client.post(self.registration_url, self.invalid_email)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_registration_invalid_password_special_letter(self):
+        """
+        Test registration with invalid payload
+        """
+        response = self.client.post(
+            self.registration_url, self.invalid_password_special_letter
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_registration_invalid_password_upper_case_letter(self):
+        """
+        Test registration with invalid payload
+        """
+        response = self.client.post(
+            self.registration_url, self.invalid_password_upper_case_letter
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_registration_invalid_password_number(self):
+        """
+        Test registration with invalid payload
+        """
+        response = self.client.post(self.registration_url, self.invalid_password_number)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
