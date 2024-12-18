@@ -49,3 +49,10 @@ class StatusCountSerializer(serializers.Serializer):
 class DayGroupSerializer(serializers.Serializer):
     day = serializers.DateField()
     statuses = StatusCountSerializer(many=True)
+
+
+class APIKeyUpdateSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = APIKey
+        fields = ["is_default"]

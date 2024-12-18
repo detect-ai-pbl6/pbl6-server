@@ -24,9 +24,9 @@ from rest_framework import permissions
 from rest_framework_simplejwt.views import TokenRefreshView
 
 from detect_ai_backend.api_keys.views import (
-    APIKeyDestroyView,
     APIKeyListCreateView,
     APIKeyLogRetrieveView,
+    APIKeyUpdateDestroyView,
 )
 from detect_ai_backend.authentication.views import (
     CustomTokenObtainPairView,
@@ -114,7 +114,7 @@ urlpatterns = [
     ),
     path(
         "api/api-keys/<str:id>",
-        APIKeyDestroyView.as_view(),
+        APIKeyUpdateDestroyView.as_view(),
         name="destroy_api_key",
     ),
     path(
