@@ -9,10 +9,12 @@ from rest_framework import exceptions, generics, permissions, response
 from detect_ai_backend.api_keys.filters import APIKeysFilter
 from detect_ai_backend.api_keys.models import APIKey, APIKeyLog, APIKeyLogStatus
 from detect_ai_backend.api_keys.serializers import (
+    APIKeyUpdateSerializer,
     CreateAPIKeySerializer,
     DayGroupSerializer,
     ListAPIKeySerializer,
 )
+from detect_ai_backend.utils.permissions import IsAuthenticationButNotAdmin
 
 
 class APIKeyListCreateView(generics.ListCreateAPIView):
@@ -46,9 +48,11 @@ class APIKeyListCreateView(generics.ListCreateAPIView):
         return super().post(request, *args, **kwargs)
 
 
-class APIKeyDestroyView(generics.DestroyAPIView):
-    permission_classes = [permissions.IsAuthenticated]
+class APIKeyUpdateDestroyView(generics.DestroyAPIView, generics.UpdateAPIView):
+    permission_classes = [IsAuthenticationButNotAdmin]
+    serializer_class = APIKeyUpdateSerializer
     lookup_field = "id"
+    http_method_names = ["delete", "put"]
 
     def get_object(self):
         return get_object_or_404(APIKey, user=self.request.user, id=self.kwargs["id"])

@@ -41,10 +41,7 @@ class APIKey(models.Model):
             elif self.api_key_type == APIKeyType.CUSTOM_TIER:
                 self.maximum_usage = 10000
         if self.is_default:
-            api_keys = APIKey.objects.filter(user=self.user)
-            for key in api_keys:
-                key.is_default = False
-                key.save()
+            APIKey.objects.filter(user=self.user).update(is_default=False)
 
         if self.total_usage > self.maximum_usage:
             self.total_usage = self.maximum_usage
