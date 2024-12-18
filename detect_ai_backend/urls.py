@@ -24,9 +24,9 @@ from rest_framework import permissions
 from rest_framework_simplejwt.views import TokenRefreshView
 
 from detect_ai_backend.api_keys.views import (
-    APIKeyDestroyView,
     APIKeyListCreateView,
     APIKeyLogRetrieveView,
+    APIKeyUpdateDestroyView,
 )
 from detect_ai_backend.authentication.views import (
     CustomTokenObtainPairView,
@@ -35,6 +35,7 @@ from detect_ai_backend.authentication.views import (
     TokenView,
 )
 from detect_ai_backend.files.views import SignedGCPStorageURLView
+from detect_ai_backend.history.views import ListHistoryView, ListRecentHistoryView
 from detect_ai_backend.predictions.views import PredictionCreateView
 from detect_ai_backend.stats.views import (
     StastsAPICallView,
@@ -113,7 +114,7 @@ urlpatterns = [
     ),
     path(
         "api/api-keys/<str:id>",
-        APIKeyDestroyView.as_view(),
+        APIKeyUpdateDestroyView.as_view(),
         name="destroy_api_key",
     ),
     path(
@@ -150,5 +151,15 @@ urlpatterns = [
         "api/predictions",
         PredictionCreateView.as_view(),
         name="prediction_create_api_view",
+    ),
+    path(
+        "api/history",
+        ListHistoryView.as_view(),
+        name="list_history_api_view",
+    ),
+    path(
+        "api/history/recencies",
+        ListRecentHistoryView.as_view(),
+        name="list_history_api_view",
     ),
 ]

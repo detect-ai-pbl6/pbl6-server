@@ -20,7 +20,7 @@ class APIKeyType(models.TextChoices):
 
 
 class APIKey(models.Model):
-    api_key = models.CharField(default=api_key_generator, max_length=42)
+    api_key = models.CharField(default=api_key_generator, max_length=42, editable=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     last_used = models.DateTimeField(blank=True, null=True, default=None)
@@ -41,10 +41,10 @@ class APIKey(models.Model):
             elif self.api_key_type == APIKeyType.CUSTOM_TIER:
                 self.maximum_usage = 10000
         if self.is_default:
-            api_keys = APIKey.objects.filter(user=self.user)
-            for key in api_keys:
-                key.is_default = False
-                key.save()
+            APIKey.objects.filter(user=self.user).update(is_default=False)
+
+        if self.total_usage > self.maximum_usage:
+            self.total_usage = self.maximum_usage
 
         super().save(*args, **kwargs)
 

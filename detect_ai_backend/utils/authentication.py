@@ -34,12 +34,17 @@ class AuthMiddleware(BaseMiddleware):
         headers = dict(scope.get("headers", []))
 
         # Look for authentication token
-        token = headers.get(b"authentication", b"").decode("utf-8")
+        token = headers.get(b"sec-websocket-protocol", b"").decode("utf-8")
         if not token:
             await send({"type": "websocket.close", "code": 4001})
             return
+
+        access_token = token.split(" ")[-1]
+        if not access_token:
+            await send({"type": "websocket.close", "code": 4001})
+            return
         # Authenticate user
-        user = await self.authenticate_user(token)
+        user = await self.authenticate_user(access_token)
 
         if not user or not user.id:
             # Close connection if authentication fails

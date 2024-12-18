@@ -3,8 +3,8 @@ from unittest.mock import MagicMock, patch
 
 from django.test import TestCase
 
-# Assuming the function is in detect_ai_backend.utils.gcp_storage
-from detect_ai_backend.utils.gcp_storage import generate_upload_signed_url_v4
+# Assuming the function is in detect_ai_backend.utils.gcp
+from detect_ai_backend.utils.gcp import generate_upload_signed_url_v4
 
 
 class GenerateUploadSignedURLV4Test(TestCase):
@@ -19,8 +19,8 @@ class GenerateUploadSignedURLV4Test(TestCase):
         ]
         self.invalid_mime_types = ["", None, "invalid/type", "application/x-executable"]
 
-    @patch("detect_ai_backend.utils.gcp_storage.uuid.uuid4")
-    @patch("detect_ai_backend.utils.gcp_storage.settings")
+    @patch("detect_ai_backend.utils.gcp.uuid.uuid4")
+    @patch("detect_ai_backend.utils.gcp.settings")
     def test_generate_upload_signed_url_v4_success(self, mock_settings, mock_uuid4):
         """
         Test successful signed URL generation with various valid MIME types
@@ -52,7 +52,7 @@ class GenerateUploadSignedURLV4Test(TestCase):
             mock_settings.GCP_FILES_BUCKET.blob.reset_mock()
             mock_blob.generate_signed_url.reset_mock()
 
-    @patch("detect_ai_backend.utils.gcp_storage.settings")
+    @patch("detect_ai_backend.utils.gcp.settings")
     def test_generate_upload_signed_url_v4_gcp_error_handling(self, mock_settings):
         """
         Test comprehensive error handling for GCP-related exceptions
@@ -65,7 +65,7 @@ class GenerateUploadSignedURLV4Test(TestCase):
 
         for error in error_scenarios:
             with patch(
-                "detect_ai_backend.utils.gcp_storage.uuid.uuid4",
+                "detect_ai_backend.utils.gcp.uuid.uuid4",
                 return_value=uuid.UUID("abcdefabcdefabcdefabcdefabcdefab"),
             ):
                 mock_blob = MagicMock()
@@ -88,7 +88,7 @@ class GenerateUploadSignedURLV4Test(TestCase):
         Detailed tests for generated signed URL characteristics
         """
         with patch(
-            "detect_ai_backend.utils.gcp_storage.generate_upload_signed_url_v4"
+            "detect_ai_backend.utils.gcp.generate_upload_signed_url_v4"
         ) as mock_url_gen:
             mock_url_gen.return_value = (
                 "https://example.com/signed_url",

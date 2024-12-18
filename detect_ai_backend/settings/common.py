@@ -14,6 +14,10 @@ import os
 from datetime import timedelta
 from pathlib import Path
 
+from tzlocal import get_localzone
+
+# Get the local timezone
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -78,6 +82,7 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
             ],
+            "debug": True,
         },
     },
 ]
@@ -110,7 +115,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = f"{get_localzone()}"
 
 USE_I18N = True
 
@@ -190,3 +195,8 @@ SIMPLE_JWT = {
 }
 
 HEADLESS_ONLY = True
+
+CELERY_TASKS = [
+    "detect_ai_backend.predictions",
+    "detect_ai_backend.history",
+]

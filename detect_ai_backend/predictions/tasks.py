@@ -5,10 +5,8 @@ from celery import shared_task
 from channels.layers import get_channel_layer
 from django.conf import settings
 
-from detect_ai_backend.api_keys.models import APIKeyLog
-from detect_ai_backend.history.models import History
-from detect_ai_backend.users.models import User
-from detect_ai_backend.utils.celery_utils import publish_message_to_group
+from detect_ai_backend.celery import app as celery_app
+from detect_ai_backend.utils.celery import publish_message_to_group
 from detect_ai_backend.websocket.models import Websocket
 
 
@@ -23,6 +21,11 @@ async def publish(connection_ids: list[str], message):
     )
 
 
+def single_publish(connection_id, message):
+    channel_layer = get_channel_layer()
+    channel_layer.group_send(connection_id, message)
+
+
 @shared_task(name=f"{settings.APP_NAME}.predict_result")
 def handle_predict_result(payload):
     email = payload.pop("email", "")
@@ -33,12 +36,7 @@ def handle_predict_result(payload):
     message = {"type": "send_result", "message": payload}
     for connection_id in connection_ids:
         publish_message_to_group(message=message, group=connection_id)
-    user = User.objects.get(email=email)
-    history = History(user=user, results=payload, image_url=image_url)
-    history.save()
-    api_key_log = APIKeyLog.objects.get(id=log_id)
-    api_key = api_key_log.api_key
-    api_key.total_usage = api_key.total_usage + 1
-    api_key.save()
-    api_key_log.status = payload["status"]
-    api_key_log.save()
+    celery_app.send_task(
+        f"{settings.APP_NAME}.post_predict_result",
+        args=[email, image_url, log_id, payload],
+    )
