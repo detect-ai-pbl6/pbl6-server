@@ -44,8 +44,8 @@ class RegistrationAPIViewTestCase(TestCase):
         response = self.client.post(self.registration_url, self.valid_payload)
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertIn("Message", response.data)
-        self.assertEqual(response.data["Message"], "User created successfully")
+        self.assertIn("message", response.data)
+        self.assertEqual(response.data["message"], "User created successfully")
 
         # Verify user was actually created
         self.assertTrue(User.objects.filter(email=self.valid_payload["email"]).exists())
