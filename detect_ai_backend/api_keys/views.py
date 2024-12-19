@@ -14,7 +14,7 @@ from detect_ai_backend.api_keys.serializers import (
     DayGroupSerializer,
     ListAPIKeySerializer,
 )
-from detect_ai_backend.utils.permissions import IsAuthenticationButNotAdmin
+from detect_ai_backend.utils.permissions import IsAuthenticatedButNotAdmin
 
 
 class APIKeyListCreateView(generics.ListCreateAPIView):
@@ -49,7 +49,7 @@ class APIKeyListCreateView(generics.ListCreateAPIView):
 
 
 class APIKeyUpdateDestroyView(generics.DestroyAPIView, generics.UpdateAPIView):
-    permission_classes = [IsAuthenticationButNotAdmin]
+    permission_classes = [IsAuthenticatedButNotAdmin]
     serializer_class = APIKeyUpdateSerializer
     lookup_field = "id"
     http_method_names = ["delete", "put"]

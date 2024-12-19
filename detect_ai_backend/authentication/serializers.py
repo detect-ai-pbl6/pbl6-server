@@ -116,3 +116,10 @@ class SocialLoginSerializer(serializers.Serializer):
 class CustomTokenObtainPairResponseSerializer(serializers.Serializer):
     access = serializers.CharField()
     refresh = serializers.CharField()
+    is_admin = serializers.BooleanField()
+    api_key = serializers.CharField()
+
+
+class GetTokensResponseSerializer(serializers.Serializer):
+    access = serializers.CharField()
+    refresh = serializers.CharField()

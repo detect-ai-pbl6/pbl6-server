@@ -4,6 +4,7 @@ from rest_framework import generics, permissions, response, status
 from detect_ai_backend.users.filters import UserFilter
 from detect_ai_backend.users.models import User
 from detect_ai_backend.users.serializers import (
+    RegistrationResponseSerializer,
     RegistrationSerializer,
     UserSerializer,
     UserUpdateResponseSerializer,
@@ -13,13 +14,16 @@ from detect_ai_backend.users.serializers import (
 class RegistrationAPIView(generics.GenericAPIView):
     serializer_class = RegistrationSerializer
 
+    @swagger_auto_schema(
+        responses={status.HTTP_201_CREATED: RegistrationResponseSerializer}
+    )
     def post(self, request):
         serializer = self.get_serializer(data=request.data)
 
         if serializer.is_valid():
             serializer.save()
             return response.Response(
-                {"Message": "User created successfully", "User": serializer.data},
+                {"message": "User created successfully", "user": serializer.data},
                 status=status.HTTP_201_CREATED,
             )
 
