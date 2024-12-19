@@ -71,3 +71,19 @@ class UserUpdateResponseSerializer(serializers.ModelSerializer):
             "id",
             "date_joined",
         ]
+
+
+class RegistrationResponseSerializer(serializers.Serializer):
+
+    class UserFieldSerializer(serializers.ModelSerializer):
+        class Meta:
+            model = User
+            fields = [
+                "first_name",
+                "last_name",
+                "email",
+                "id",
+            ]
+
+    message = serializers.CharField()
+    user = UserFieldSerializer()

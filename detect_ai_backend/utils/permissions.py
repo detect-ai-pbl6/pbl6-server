@@ -37,9 +37,11 @@ class HasAPIKey(permissions.BasePermission):
         return is_authenticated
 
 
-class IsAuthenticationButNotAdmin(permissions.BasePermission):
+class IsAuthenticatedButNotAdmin(permissions.BasePermission):
 
     def has_permission(self, request, view):
         return bool(
-            request.user and request.user.is_authenticated and not request.user.is_staff
+            request.user
+            and request.user.is_authenticated
+            and not (request.user.is_staff or request.user.is_superuser)
         )
