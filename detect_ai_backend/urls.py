@@ -48,6 +48,7 @@ from detect_ai_backend.users.views import (
     ListUserView,
     RegistrationAPIView,
     RetrieveUpdateUserProfileView,
+    RetriveUpdateUserView,
 )
 
 schema_view = get_schema_view(
@@ -98,14 +99,14 @@ urlpatterns = [
         name="retrieve_update_profile",
     ),
     path(
+        "api/users/<str:id>",
+        RetriveUpdateUserView.as_view(),
+        name="retrieve_update_single_user",
+    ),
+    path(
         "api/users",
         ListUserView.as_view(),
         name="list_users",
-    ),
-    path(
-        "api/users/<str:id>",
-        ListUserView.as_view(),
-        name="list_single_user",
     ),
     path(
         "api/api-keys",
