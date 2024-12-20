@@ -1,3 +1,4 @@
+from django.contrib.auth.hashers import make_password
 from rest_framework import serializers
 
 from detect_ai_backend.users.models import User
@@ -73,6 +74,38 @@ class UserUpdateResponseSerializer(serializers.ModelSerializer):
         ]
 
 
+class CreateUserSerializer(serializers.ModelSerializer):
+    id = serializers.SerializerMethodField()
+    date_joined = serializers.SerializerMethodField()
+
+    class Meta:
+        model = User
+        fields = [
+            "first_name",
+            "last_name",
+            "email",
+            "password",
+            "id",
+            "date_joined",
+            "is_active",
+        ]
+        extra_kwargs = {
+            "password": {"write_only": True},
+        }
+
+    def get_id(self, obj):
+        return obj.id
+
+    def get_date_joined(self, obj):
+        return obj.date_joined
+
+    def update(self, instance, validated_data):
+        password = validated_data.get("password", "")
+        if password:
+            validated_data["password"] = make_password(password)
+        return super().update(instance, validated_data)
+
+
 class RegistrationResponseSerializer(serializers.Serializer):
 
     class UserFieldSerializer(serializers.ModelSerializer):
@@ -87,3 +120,12 @@ class RegistrationResponseSerializer(serializers.Serializer):
 
     message = serializers.CharField()
     user = UserFieldSerializer()
+
+
+class CreateUserResponse(serializers.Serializer):
+    id = serializers.IntegerField()
+    first_name = serializers.CharField()
+    last_name = serializers.CharField()
+    email = serializers.CharField()
+    date_joined = serializers.CharField()
+    is_active = serializers.BooleanField()

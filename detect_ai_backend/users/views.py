@@ -4,6 +4,8 @@ from rest_framework import generics, permissions, response, status
 from detect_ai_backend.users.filters import UserFilter
 from detect_ai_backend.users.models import User
 from detect_ai_backend.users.serializers import (
+    CreateUserResponse,
+    CreateUserSerializer,
     RegistrationResponseSerializer,
     RegistrationSerializer,
     UserSerializer,
@@ -48,8 +50,29 @@ class RetrieveUpdateUserProfileView(generics.RetrieveUpdateAPIView):
 
 
 class ListUserView(generics.ListAPIView):
-    serializer_class = UserUpdateResponseSerializer
     permission_classes = [permissions.IsAdminUser]
     queryset = User.objects.all().order_by("-id")
     filterset_fields = ("email", "is_active")
     filterset_class = UserFilter
+
+    def get_serializer_class(self):
+        if self.request.method == "POST":
+            return CreateUserSerializer
+        return UserUpdateResponseSerializer
+
+    @swagger_auto_schema(responses={status.HTTP_201_CREATED: CreateUserResponse})
+    def post(self, request, *args, **kwargs):
+        return super().post(request, *args, **kwargs)
+
+
+class RetriveUpdateUserView(generics.RetrieveUpdateAPIView):
+    permission_classes = [permissions.IsAdminUser]
+    queryset = User.objects.all().order_by("-id")
+    filterset_fields = ("email", "is_active")
+    filterset_class = UserFilter
+    lookup_field = "id"
+
+    def get_serializer_class(self):
+        if self.request.method in ["PUT", "PATCH"]:
+            return CreateUserSerializer
+        return UserUpdateResponseSerializer
