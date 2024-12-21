@@ -52,7 +52,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 
         api_key = ""
         try:
-            api_key_instance = APIKey.objects.get(user=self.user, is_default=True)
+            api_key_instance = APIKey.objects.get(user=self.user, is_active=True)
             api_key = api_key_instance.api_key
         except APIKey.DoesNotExist:
             pass

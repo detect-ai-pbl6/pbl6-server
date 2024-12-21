@@ -55,4 +55,7 @@ class APIKeyUpdateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = APIKey
-        fields = ["is_default"]
+        fields = ["is_active", "api_key"]
+        extra_kwargs = {
+            "api_key": {"read_only": True},
+        }

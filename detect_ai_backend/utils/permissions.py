@@ -28,7 +28,7 @@ class HasAPIKey(permissions.BasePermission):
                 )
                 if api_key_instance.total_usage >= api_key_instance.maximum_usage:
                     raise LimitExceededException
-                if not api_key_instance.is_default:
+                if not api_key_instance.is_active:
                     raise APIKeyNotDefaultException
                 is_authenticated = True
             except APIKey.DoesNotExist:

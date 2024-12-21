@@ -29,7 +29,7 @@ class APIKey(models.Model):
     )
     maximum_usage = models.IntegerField(default=0, validators=[MinValueValidator(0)])
     total_usage = models.BigIntegerField(default=0, validators=[MinValueValidator(0)])
-    is_default = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
         # Set maximum usage based on API key type if not explicitly set
@@ -40,8 +40,8 @@ class APIKey(models.Model):
                 self.maximum_usage = 10000
             elif self.api_key_type == APIKeyType.CUSTOM_TIER:
                 self.maximum_usage = 10000
-        if self.is_default:
-            APIKey.objects.filter(user=self.user).update(is_default=False)
+        if self.is_active:
+            APIKey.objects.filter(user=self.user).update(is_active=False)
 
         if self.total_usage > self.maximum_usage:
             self.total_usage = self.maximum_usage

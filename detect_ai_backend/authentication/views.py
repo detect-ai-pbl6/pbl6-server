@@ -49,7 +49,7 @@ class TokenView(views.APIView):
         api_key = ""
         try:
             api_key_instance = APIKey.objects.get(
-                user=self.request.user, is_default=True
+                user=self.request.user, is_active=True
             )
             api_key = api_key_instance.api_key
         except APIKey.DoesNotExist:
