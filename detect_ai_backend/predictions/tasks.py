@@ -26,7 +26,10 @@ def single_publish(connection_id, message):
     channel_layer.group_send(connection_id, message)
 
 
-@shared_task(name=f"{settings.APP_NAME}.predict_result")
+@shared_task(
+    name=f"{settings.APP_NAME}.predict_result",
+    retry_kwargs={"max_retries": 3, "countdown": 3},
+)
 def handle_predict_result(payload):
     email = payload.pop("email", "")
     image_url = payload.get("image_url", "")
