@@ -28,9 +28,10 @@ class PredictionCreateView(generics.CreateAPIView):
         serializer.is_valid(raise_exception=True)
         validated_data = serializer.validated_data
 
-        api_key_log = APIKeyLog.objects.create(
+        api_key_log = APIKeyLog(
             api_key=self.request.api_key, status=APIKeyLogStatus.PENDING
         )
+        api_key_log.save()
         payload = {
             "email": request.user.email,
             "image_url": validated_data["image_url"],
