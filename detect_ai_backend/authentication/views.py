@@ -14,6 +14,7 @@ from rest_framework import (
 )
 from rest_framework_simplejwt.views import TokenObtainPairView
 
+from detect_ai_backend.api_keys.models import APIKey
 from detect_ai_backend.authentication.serializers import (
     CustomTokenObtainPairResponseSerializer,
     GetTokensResponseSerializer,
@@ -45,10 +46,18 @@ class TokenView(views.APIView):
     @swagger_auto_schema(responses={status.HTTP_200_OK: GetTokensResponseSerializer})
     def get(self, request, *args, **kwargs):
         refresh, access = create_refresh_token(request.user)
+        api_key = ""
+        try:
+            api_key_instance = APIKey.objects.get(
+                user=self.request.user, is_default=True
+            )
+            api_key = api_key_instance.api_key
+        except APIKey.DoesNotExist:
+            pass
         request.session.flush()
         return response.Response(
             status=status.HTTP_200_OK,
-            data={"refresh": str(refresh), "access": str(access)},
+            data={"refresh": str(refresh), "access": str(access), "api_key": api_key},
         )
 
 
