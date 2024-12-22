@@ -123,3 +123,4 @@ class CustomTokenObtainPairResponseSerializer(serializers.Serializer):
 class GetTokensResponseSerializer(serializers.Serializer):
     access = serializers.CharField()
     refresh = serializers.CharField()
+    api_key = serializers.CharField()
