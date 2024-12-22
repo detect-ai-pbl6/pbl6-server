@@ -48,9 +48,7 @@ class TokenView(views.APIView):
         refresh, access = create_refresh_token(request.user)
         api_key = ""
         try:
-            api_key_instance = APIKey.objects.get(
-                user=self.request.user, is_active=True
-            )
+            api_key_instance = APIKey.objects.get(user=request.user, is_active=True)
             api_key = api_key_instance.api_key
         except APIKey.DoesNotExist:
             pass
