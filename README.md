@@ -11,9 +11,9 @@
 
 ### Setup environment
 
-1. Install dependencies
+1. Install dependencies for development
    ```
-   pip install -r requirements.txt
+   pip install -r requirements-dev.txt
    ```
 2. Update database information in `detect_ai_backend/settings/local.py`
 3. Migrate database
@@ -22,6 +22,11 @@
    ```
 
 ### Launch
+1. First terminal
    ```
-   python manage.py runserver 0.0.0.0:8000
+   python manage.py runserver
+   ```
+2. Second terminal
+   ```
+   celery -A detect_ai_backend worker -l INFO --concurrency 2 -P solo -E -n worker1
    ```
